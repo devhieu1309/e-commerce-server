@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreShippingMethodRequest;
+use App\Http\Requests\UpdateShippingMethodRequest;
 use App\Models\ShippingMethod;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,7 @@ class ShippingMethodController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreShippingMethodRequest $request, $id)
+    public function update(UpdateShippingMethodRequest $request, $id)
     {
         $shipping_method = ShippingMethod::findOrFail($id);
 
