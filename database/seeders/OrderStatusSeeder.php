@@ -44,6 +44,18 @@ class OrderStatusSeeder extends Seeder
             [
                 'status' => 'Hoàn trả hàng',
             ],
+            [
+                'status' => 'Giao hàng không thành công',
+            ],
+            [
+                'status' => 'Đơn hàng bị từ chối',
+            ],
+            [
+                'status' => 'Đã trả hàng thành công',
+            ],
+            [
+                'status' => 'Đơn hàng bị hủy bởi hệ thống',
+            ],
 
         ];
 

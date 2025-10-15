@@ -25,4 +25,14 @@ class StoreOrderStatusRequest extends FormRequest
             'status' => 'string|required|max:100',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'status.string' => 'Trạng thái phải là chuỗi',
+            'status.required' => 'Trạng thái không được để trống',
+            'status.max' => 'Trạng thái không được vượt quá 100 ký tự',
+            'status.unique' => 'Tên trạng thái đã tồn tại',
+        ];
+    }
 }
