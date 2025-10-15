@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\BannerController;
@@ -11,9 +13,18 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/products', [ProductController::class, 'index']);
+
+// Video Review Routes
+Route::get('/video-reviews', [VideoReviewController::class, 'index']);
+Route::post('/video-reviews', [VideoReviewController::class, 'store']);
+Route::put('/video-reviews/{id}', [VideoReviewController::class, 'update']);
+Route::patch('/video-reviews/{id}', [VideoReviewController::class, 'update']);
+Route::delete('/video-reviews/{id}', [VideoReviewController::class, 'destroy']);
+Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggleVisibility']);
+
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
-
 
 //phương thanh toán
 Route::get('/order-status', [OrderStatusController::class, 'index']);
@@ -29,3 +40,4 @@ Route::post('/banner', [BannerController::class, 'store']);
 Route::patch('/banner/{id}', [BannerController::class, 'update']);
 Route::get('/banner/{id}', [BannerController::class, 'show']);
 Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
+
