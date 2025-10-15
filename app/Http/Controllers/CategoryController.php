@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return response()->json($categories);
+        return response()->json(['success' => true, 'categories' => $categories], 200);
     }
 
     /**
@@ -22,11 +23,16 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $validated = $request->safe()->only('category_name', 'description');
+        $validated = $request->validated();
         $category = Category::create($validated);
 
-        return response()->json($category, 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Danh mục đã được tạo thành công.',
+            'data' => $category
+        ], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -35,24 +41,31 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        return response()->json($category);
+        return response()->json([
+            'success' => true,
+            'message' => 'Lấy thông tin danh mục thành công.',
+            'data' => $category
+        ], 200);
     }
+
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreCategoryRequest $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
         $category = Category::findOrFail($id);
 
-        $category->update([
-            'category_name' => $request->get('category_name'),
-            'description' => $request->get('description'),
-        ]);
+        $category->update($request->validated());
 
-        return response()->json($category);
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật danh mục thành công.',
+            'data' => $category
+        ], 200);
     }
+
 
     /**
      * Remove the specified resource from storage.

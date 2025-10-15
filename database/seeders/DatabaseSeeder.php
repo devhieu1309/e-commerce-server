@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             VideoReviewSeeder::class
         ]);
+      
+        $this->call(CategorySeeder::class);
+        $this->call(ShippingMethodSeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([
