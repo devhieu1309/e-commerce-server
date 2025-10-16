@@ -16,7 +16,7 @@ class ShippingMethodController extends Controller
     {
         // lay danh sach phuong thuc van chuyen
         $shipping_methods = ShippingMethod::all();
-        return response()->json($shipping_methods);
+        return response()->json(['success' => true, 'shipping_methods' => $shipping_methods], 200);
     }
 
     /**
@@ -27,7 +27,12 @@ class ShippingMethodController extends Controller
         $validated = $request->safe()->only('shipping_method_name', 'shipping_method_price');
         $shipping_method = ShippingMethod::create($validated);
 
-        return response()->json($shipping_method, 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Thêm phương thức vận chuyển thành công',
+            'data' => $shipping_method
+        ], 201);
+
     }
 
     /**
@@ -37,7 +42,11 @@ class ShippingMethodController extends Controller
     {
         $shipping_method = ShippingMethod::findOrFail($id);
 
-        return response()->json($shipping_method);
+        return response()->json([
+            'success' => true,
+            'message' => 'Lấy thông tin phương thức vận chuyển thành công.',
+            'data' => $shipping_method
+        ], 200);
     }
     
     /**
@@ -47,12 +56,13 @@ class ShippingMethodController extends Controller
     {
         $shipping_method = ShippingMethod::findOrFail($id);
 
-        $shipping_method->update([
-            'shipping_method_name' => $request->get('shipping_method_name'),
-            'shipping_method_price' => $request->get('shipping_method_price'),
-        ]);
-
-        return response()->json($shipping_method);
+        $shipping_method->update($request->validated());
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật phương thức vận chuyển thành công.',
+            'data' => $shipping_method
+        ], 200);
+        
     }
 
     /**
