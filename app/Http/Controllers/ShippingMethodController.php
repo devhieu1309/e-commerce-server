@@ -16,7 +16,8 @@ class ShippingMethodController extends Controller
     {
         // lay danh sach phuong thuc van chuyen
         $shipping_methods = ShippingMethod::all();
-        return response()->json(['success' => true, 'shipping_methods' => $shipping_methods], 200);
+        // return response()->json(['success' => true, 'shipping_methods' => $shipping_methods], 200);
+        return response() -> json($shipping_methods);
     }
 
     /**
