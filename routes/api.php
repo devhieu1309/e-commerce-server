@@ -17,6 +17,7 @@ Route::get('/categories/{id}', [CategoryController::class, 'show']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
 //phương thanh toán
+Route::get('/order-status/search', [OrderStatusController::class, 'search']);
 Route::get('/order-status', [OrderStatusController::class, 'index']);
 Route::post('/order-status', [OrderStatusController::class, 'store']);
 Route::patch('/order-status/{id}', [OrderStatusController::class, 'update']);
