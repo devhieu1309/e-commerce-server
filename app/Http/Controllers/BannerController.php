@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBannerRequest;
+use App\Http\Requests\UpdateBannerRequest;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PhpParser\Node\Expr\FuncCall;
 
 class BannerController extends Controller
 {
@@ -18,41 +20,8 @@ class BannerController extends Controller
         return  response()->json($banner);
     }
 
-    // public function store(StoreBannerRequest $request)
-    // {
-    //     $validated = $request->safe()->only('title', 'image', 'link_url', 'position', 'is_active');
-    //     $banner = Banner::create($validated);
-
-    //     return response()->json($banner, 201);
-    // }
-
     public function store(StoreBannerRequest $request)
     {
-        // try {
-        //     // Lấy dữ liệu đã validate
-        //     $validated = $request->validated();
-
-        //     // Xử lý upload ảnh
-        //     if ($request->hasFile('image')) {
-        //         // Lưu vào storage/app/public
-        //         $path = $request->file('image')->store('public');
-        //         $validated['image'] = $path; // Lưu đường dẫn vào DB
-        //     }
-
-        //     // Tạo bản ghi mới trong DB
-        //     $banner = Banner::create($validated);
-
-        //     return response()->json([
-        //         'message' => 'Banner được thêm thành công',
-        //         'data' => $banner
-        //     ], 201);
-        // } catch (\Exception $e) {
-        //     // Bắt lỗi nếu có (tránh lỗi 500 mơ hồ)
-        //     return response()->json([
-        //         'message' => 'Thêm Banner thất bại',
-        //         'error' => $e->getMessage(),
-        //     ], 500);
-        // }
 
         try {
             // Lấy dữ liệu đã validate
@@ -108,7 +77,7 @@ class BannerController extends Controller
     }
 
 
-    public function update(StoreBannerRequest $request, $id)
+    public function update(UpdateBannerRequest $request, $id)
     {
 
         try {
@@ -140,5 +109,34 @@ class BannerController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function search(Request $request)
+    {
+
+        $title = trim($request->query('title'));
+
+        if (!$title) {
+            return response()->json(Banner::all());
+        }
+
+        $banners = Banner::where('title', 'LIKE', '%' . $title . '%')
+            // chỉ lấy những banner chứa cụm từ gần giống nhất
+            ->orderByRaw(
+                "CASE 
+            WHEN title LIKE ? THEN 1
+            WHEN title LIKE ? THEN 2
+            WHEN title LIKE ? THEN 3
+            ELSE 4 END",
+                [
+                    $title,          // trùng khớp hoàn toàn
+                    $title . '%',    // bắt đầu bằng từ khóa
+                    '%' . $title . '%' // chứa trong giữa chuỗi
+                ]
+            )
+            ->limit(5) // chỉ trả về 5 kết quả liên quan nhất
+            ->get();
+
+        return response()->json($banners);
     }
 }
