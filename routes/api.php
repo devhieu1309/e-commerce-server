@@ -6,6 +6,7 @@ use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -58,3 +59,10 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 // Route::patch('/users/{id}', [UserList_Controller::class, 'update']); 
 // Route::delete('/users/{id}', [UserList_Controller::class, 'destroy']); 
 
+//tin tuc
+Route::get('news/search', [NewsController::class, 'search']);
+Route::get('/news', [NewsController::class, 'index']);
+Route::post('/news', [NewsController::class, 'store']);
+Route::patch('/news/{id}', [NewsController::class, 'update']);
+Route::get('/news/{id}', [NewsController::class, 'show']);
+Route::delete('/news/{id}', [NewsController::class, 'destroy']);

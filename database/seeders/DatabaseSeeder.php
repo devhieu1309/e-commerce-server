@@ -15,12 +15,14 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             ProductSeeder::class,
-            VideoReviewSeeder::class
+            VideoReviewSeeder::class,
+            NewsSeeder::class
         ]);
-      
+
         $this->call(CategorySeeder::class);
         $this->call(ShippingMethodSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(NewsSeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([
