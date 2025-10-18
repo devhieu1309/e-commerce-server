@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ShippingMethodSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(NewsSeeder::class);
+        $this->call(BannerSeeder::class);
+        $this->call(OrderStatusSeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBannerRequest extends FormRequest
+class UpdateBannerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreBannerRequest extends FormRequest
 
         return [
             'title' => 'string|required|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'link_url' => 'string|required|max:500',
             'position' => 'in:home,product|required',
             'is_active' => 'boolean|required',
@@ -40,8 +40,7 @@ class StoreBannerRequest extends FormRequest
 
             'image.image' => 'Tệp tải lên phải là ảnh',
             'image.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif, svg',
-            'image.max' => 'Kích thước ảnh không được vượt quá 5MB',
-            'image.required' => 'Ảnh không được để trống',
+            'image.max' => 'Kích thước ảnh không được vượt quá 2MB',
 
             'link_url.string' => 'Đường dẫn liên kết phải là chuỗi',
             'link_url.required' => 'Đường dẫn liên kết không được để trống',

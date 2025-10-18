@@ -38,6 +38,7 @@ Route::delete('/order-status/{id}', [OrderStatusController::class, 'destroy']);
 
 
 //Banner
+Route::get('banner/search', [BannerController::class, 'search']);
 Route::get('/banner', [BannerController::class, 'index']);
 Route::post('/banner', [BannerController::class, 'store']);
 Route::patch('/banner/{id}', [BannerController::class, 'update']);
