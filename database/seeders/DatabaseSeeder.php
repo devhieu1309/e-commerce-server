@@ -22,11 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ShippingMethodSeeder::class);
         $this->call(OrderStatusSeeder::class);
         $this->call(UserSeeder::class);
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call(VariationSeeder::class);
     }
 }
