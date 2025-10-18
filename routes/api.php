@@ -6,6 +6,7 @@ use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\NewsBlocksController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -60,10 +61,18 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 // Route::patch('/users/{id}', [UserList_Controller::class, 'update']); 
 // Route::delete('/users/{id}', [UserList_Controller::class, 'destroy']); 
 
-//tin tuc
+//tin tức
 Route::get('news/search', [NewsController::class, 'search']);
 Route::get('/news', [NewsController::class, 'index']);
 Route::post('/news', [NewsController::class, 'store']);
 Route::patch('/news/{id}', [NewsController::class, 'update']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
 Route::delete('/news/{id}', [NewsController::class, 'destroy']);
+
+//bài viết
+Route::get('newsBlocks/search', [NewsBlocksController::class, 'search']);
+Route::get('/newsBlocks', [NewsBlocksController::class, 'index']);
+Route::post('/newsBlocks', [NewsBlocksController::class, 'store']);
+Route::patch('/newsBlocks/{id}', [NewsBlocksController::class, 'update']);
+Route::get('/newsBlocks/{id}', [NewsBlocksController::class, 'show']);
+Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);

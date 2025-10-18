@@ -18,4 +18,9 @@ class News extends Model
         'cover_image',
 
     ];
+
+    public function blocks()
+    {
+        return $this->hasMany(News_Blocks::class, 'news_id');
+    }
 }
