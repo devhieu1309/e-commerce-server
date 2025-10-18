@@ -44,7 +44,7 @@ class VideoReviewRequest extends FormRequest
             'title.max' => 'Tiêu đề không được vượt quá :max ký tự.',
             'url.required' => 'Vui lòng nhập đường dẫn video.',
             'url.string'   => 'Đường dẫn video phải là chuỗi ký tự.',
-            'url.url' => 'Đường dẫn video không hợp lệ.',
+            'url.regex' => 'Đường dẫn video không hợp lệ.',
         ];
     }
 }
