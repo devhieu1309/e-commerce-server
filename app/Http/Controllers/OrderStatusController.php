@@ -55,4 +55,33 @@ class OrderStatusController extends Controller
 
         return response()->json($orderStatus);
     }
+
+    public function search(Request $request)
+    {
+
+        $status = trim($request->query('status'));
+
+        if (!$status) {
+            return response()->json(Order_Status::all());
+        }
+
+        $status = Order_Status::where('status', 'LIKE', '%' . $status . '%')
+
+            ->orderByRaw(
+                "CASE 
+            WHEN status LIKE ? THEN 1
+            WHEN status LIKE ? THEN 2
+            WHEN status LIKE ? THEN 3
+            ELSE 4 END",
+                [
+                    $status,
+                    $status . '%',
+                    '%' . $status . '%'
+                ]
+            )
+            ->limit(3)
+            ->get();
+
+        return response()->json($status);
+    }
 }
