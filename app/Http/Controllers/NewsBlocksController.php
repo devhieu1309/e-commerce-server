@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBannerRequest;
-use App\Http\Requests\UpdateBannerRequest;
-use App\Models\Banner;
+use App\Http\Requests\StoreNewsBlocksRequests;
+use App\Http\Requests\UpdateNewsBlocksRequests;
+use App\Models\News_Blocks;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use PhpParser\Node\Expr\FuncCall;
+use Illuminate\Support\Facades\Storage;
 
-class BannerController extends Controller
+
+class NewsBlocksController extends Controller
 {
     //
-
     public function index()
     {
-        $banner = Banner::all();
-        return  response()->json($banner);
+        $newsBlocks = News_Blocks::all();
+        return  response()->json($newsBlocks);
     }
 
-    public function store(StoreBannerRequest $request)
+    public function store(StoreNewsBlocksRequests $request)
     {
 
         try {
@@ -30,28 +29,28 @@ class BannerController extends Controller
             // Tạo tên ngẫu nhiên cho ảnh
             $imageName = Str::random(32) . '.' . $request->file('image')->getClientOriginalExtension();
 
-            // Lưu ảnh vào thư mục storage/app/public/banner
+            // Lưu ảnh vào thư mục storage/app/public/newsBlocks
             Storage::disk('public')->put(
-                'banner/' . $imageName,
+                'newsBlocks/' . $imageName,
                 file_get_contents($request->file('image'))
             );
 
             // Lưu thông tin banner vào database
-            $banner = Banner::create([
+            $newsBlocks = News_Blocks::create([
                 'title'     => $data['title'],
-                'image'     => 'banner/' . $imageName,
-                'link_url'  => $data['link_url'],
-                'position'  => $data['position'],
-                'is_active' => (int) $data['is_active'],
+                'content'     => $data['content'],
+                'image'     => 'newsBlocks/' . $imageName,
+                'position' => (int) $data['position'],
+                'news_id'     => $data['news_id'],
             ]);
 
             return response()->json([
-                'message' => 'Thêm Banner thành công!',
-                'banner'  => $banner,
+                'message' => 'Thêm bài viết thành công!',
+                'newsBlocks'  => $newsBlocks,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Thêm Banner thất bại!',
+                'message' => 'Thêm bài viết thất bại!',
                 'error'   => $e->getMessage(),
             ], 500);
         }
@@ -59,53 +58,53 @@ class BannerController extends Controller
 
     public function show($id)
     {
-        $banner = Banner::findOrFail($id);
+        $newsBlocks = News_Blocks::findOrFail($id);
 
-        return response()->json($banner);
+        return response()->json($newsBlocks);
     }
 
     public function destroy($id)
     {
-        $banner = Banner::findOrFail($id);
-        $banner->delete();
+        $newsBlocks = News_Blocks::findOrFail($id);
+        $newsBlocks->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Xóa Banner thành công',
+            'message' => 'Xóa bài viết thành công',
             'deleted_id' => $id
         ]);
     }
 
 
-    public function update(UpdateBannerRequest $request, $id)
+    public function update(UpdateNewsBlocksRequests $request, $id)
     {
 
         try {
-            $banner = Banner::findOrFail($id);
+            $newsBlocks = News_Blocks::findOrFail($id);
             $data = $request->validated();
 
             if ($request->hasFile('image')) {
                 // Xóa ảnh cũ nếu tồn tại
-                if ($banner->image && Storage::disk('public')->exists($banner->image)) {
-                    Storage::disk('public')->delete($banner->image);
+                if ($newsBlocks->image && Storage::disk('public')->exists($newsBlocks->image)) {
+                    Storage::disk('public')->delete($newsBlocks->image);
                 }
 
                 // Lưu ảnh mới
                 $image = $request->file('image');
                 $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('banner', $imageName, 'public');
-                $data['image'] = 'banner/' . $imageName;
+                $image->storeAs('newsBlocks', $imageName, 'public');
+                $data['image'] = 'newsBlocks/' . $imageName;
             }
 
-            $banner->update($data);
+            $newsBlocks->update($data);
 
             return response()->json([
-                'message' => 'Cập nhật Banner thành công!',
-                'banner' => $banner,
+                'message' => 'Cập nhật bài viết thành công!',
+                'newsBlocks' => $newsBlocks,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Cập nhật Banner thất bại!',
+                'message' => 'Cập nhật bài viết thất bại!',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -117,10 +116,10 @@ class BannerController extends Controller
         $title = trim($request->query('title'));
 
         if (!$title) {
-            return response()->json(Banner::all());
+            return response()->json(News_Blocks::all());
         }
 
-        $banners = Banner::where('title', 'LIKE', '%' . $title . '%')
+        $newsBlocks = News_Blocks::where('title', 'LIKE', '%' . $title . '%')
             // chỉ lấy những banner chứa cụm từ gần giống nhất
             ->orderByRaw(
                 "CASE 
@@ -137,6 +136,6 @@ class BannerController extends Controller
             ->limit(5) // chỉ trả về 5 kết quả liên quan nhất
             ->get();
 
-        return response()->json($banners);
+        return response()->json($newsBlocks);
     }
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\NewsBlocksController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -29,6 +31,7 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('users', UserController::class);
 
 //phương thanh toán
+Route::get('/order-status/search', [OrderStatusController::class, 'search']);
 Route::get('/order-status', [OrderStatusController::class, 'index']);
 Route::post('/order-status', [OrderStatusController::class, 'store']);
 Route::patch('/order-status/{id}', [OrderStatusController::class, 'update']);
@@ -37,6 +40,7 @@ Route::delete('/order-status/{id}', [OrderStatusController::class, 'destroy']);
 
 
 //Banner
+Route::get('banner/search', [BannerController::class, 'search']);
 Route::get('/banner', [BannerController::class, 'index']);
 Route::post('/banner', [BannerController::class, 'store']);
 Route::patch('/banner/{id}', [BannerController::class, 'update']);
@@ -58,3 +62,18 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 // Route::patch('/users/{id}', [UserList_Controller::class, 'update']); 
 // Route::delete('/users/{id}', [UserList_Controller::class, 'destroy']); 
 
+//tin tức
+Route::get('news/search', [NewsController::class, 'search']);
+Route::get('/news', [NewsController::class, 'index']);
+Route::post('/news', [NewsController::class, 'store']);
+Route::patch('/news/{id}', [NewsController::class, 'update']);
+Route::get('/news/{id}', [NewsController::class, 'show']);
+Route::delete('/news/{id}', [NewsController::class, 'destroy']);
+
+//bài viết
+Route::get('newsBlocks/search', [NewsBlocksController::class, 'search']);
+Route::get('/newsBlocks', [NewsBlocksController::class, 'index']);
+Route::post('/newsBlocks', [NewsBlocksController::class, 'store']);
+Route::patch('/newsBlocks/{id}', [NewsBlocksController::class, 'update']);
+Route::get('/newsBlocks/{id}', [NewsBlocksController::class, 'show']);
+Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
