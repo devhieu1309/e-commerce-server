@@ -9,6 +9,7 @@ use App\Http\Controllers\BannerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -58,3 +59,6 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 // Route::patch('/users/{id}', [UserList_Controller::class, 'update']); 
 // Route::delete('/users/{id}', [UserList_Controller::class, 'destroy']); 
 
+//Đăng ký & Đăng Nhập 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
