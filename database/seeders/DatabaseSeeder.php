@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BannerSeeder::class);
         $this->call(OrderStatusSeeder::class);
         $this->call(NewsBlocksSeeder::class);
+        $this->call(PromotionSeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([

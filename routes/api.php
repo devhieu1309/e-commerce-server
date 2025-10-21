@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\NewsBlocksController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PromotionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -29,6 +30,8 @@ Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggl
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('users', UserController::class);
+// chương trình khuyến mãi
+Route::apiResource('promotions', PromotionController::class);
 
 //phương thanh toán
 Route::get('/order-status/search', [OrderStatusController::class, 'search']);
