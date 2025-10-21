@@ -72,4 +72,25 @@ class VariationController extends Controller
             'deleted_id' => $id
         ]);
     }
+
+    /**
+     * Get variations by variation name
+     */
+    public function searchByVariationName(Request $request)
+    {
+        // return "Minh Hieu";
+        $name = $request->query('name');
+
+        if (!$name) {
+            return response()->json(['message' => 'Variation name is required for search.'], 400);
+        }
+
+        $variations = Variation::where('variation_name', 'LIKE', '%' . $name . '%')->get();
+
+        if ($variations->isEmpty()) {
+            return response()->json(['message' => 'No products found matching the name.'], 404);
+        }
+
+        return response()->json($variations);
+    }
 }

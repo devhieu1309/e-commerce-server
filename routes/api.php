@@ -16,10 +16,19 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::get('/products', [ProductController::class, 'index']);
-Route::apiResource('shipping_methods', ShippingMethodController::class);
+// ========== Minh Hieu ===========
+Route::get('categories/{category}/variations', [CategoryController::class, 'getVariationByCategory']);
+Route::get('variations/search', [VariationController::class, 'searchByVariationName']);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('variations', VariationController::class);
+// ========== End Minh Hieu ===========
+
+
+
+
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('users', UserController::class);
 
 // Video Review Routes
