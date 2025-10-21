@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Variation;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
+    * Display a listing of the resource.
+    */
     public function index()
     {
         $categories = Category::all();
@@ -19,8 +20,8 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
+    * Store a newly created resource in storage.
+    */
     public function store(StoreCategoryRequest $request)
     {
         $validated = $request->validated();
@@ -35,8 +36,8 @@ class CategoryController extends Controller
 
 
     /**
-     * Display the specified resource.
-     */
+    * Display the specified resource.
+    */
     public function show($id)
     {
         $category = Category::findOrFail($id);
@@ -51,8 +52,8 @@ class CategoryController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     */
+    * Update the specified resource in storage.
+    */
     public function update(UpdateCategoryRequest $request, $id)
     {
         $category = Category::findOrFail($id);
@@ -68,8 +69,8 @@ class CategoryController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
-     */
+    * Remove the specified resource from storage.
+    */
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
@@ -79,6 +80,18 @@ class CategoryController extends Controller
             'success' => true,
             'message' => 'Xóa danh mục thành công',
             'deleted_id' => $id
+        ]);
+    }
+
+    /**
+    * Get varations by category
+    */
+    public function getVariationByCategory(Category $category)
+    {
+        $variations = $category->variations; 
+        return response()->json([
+            'category' => $category,
+            'variations' => $variations,
         ]);
     }
 }
