@@ -16,53 +16,58 @@ class NewsSeeder extends Seeder
     {
         $news = [
             [
-                'title' => 'Khuyến mãi mùa hè',
-                'cover_image' => 'summer_sale.jpg',
+                'title' => 'iPhone 15 hồng có mấy phiên bản? 5 Điểm độc đáo khiến nhiều chị em yêu thích',
+                'cover_image' => 'news/iPhone-15-1.jpg',
 
             ],
             [
-                'title' => 'Giảm giá mùa đông',
-                'cover_image' => 'winter_sale.jpg',
+                'title' => 'iPhone 15 có mấy màu? Màu nào đẹp nhất',
+                'cover_image' => 'news/tt9.png',
 
             ],
             [
-                'title' => 'Sản phẩm mới 2025',
-                'cover_image' => 'new_product_2025.jpg',
+                'title' => 'Chi phí sản xuất iPhone 15 Series',
+                'cover_image' => 'news/tt8.webp',
 
             ],
             [
-                'title' => 'Ưu đãi khách hàng VIP',
-                'cover_image' => 'vip_offer.jpg',
+                'title' => 'Cổng sạc USB-C IPhone 15 và công dụng',
+                'cover_image' => 'news/tt7.webp',
+
+            ],
+            // [
+            //     'title' => 'Flash Sale Cuối Tuần',
+            //     'cover_image' => 'news/tt7.webp',
+
+            // ],
+            [
+                'title' => '14 cập nhật tính năng trên iOS 17.1',
+                'cover_image' => 'news/tt6.webp',
 
             ],
             [
-                'title' => 'Flash Sale Cuối Tuần',
-                'cover_image' => 'flash_sale.jpg',
+                'title' => 'Nên lựa chọn mẫu Apple Pencil nào trong 3 phiên bản',
+                'cover_image' => 'news/tt5.webp',
 
             ],
             [
-                'title' => 'Giảm giá điện thoại',
-                'cover_image' => 'phone_discount.jpg',
+                'title' => 'Tổng hợp sự kiện Apple Scary Fast: 3 bộ vi xử lý Apple M3, MacBook Pro 14 & 16 inch và iMac M3',
+                'cover_image' => 'news/tt4.webp',
 
             ],
             [
-                'title' => 'Khuyến mãi Laptop',
-                'cover_image' => 'laptop_promo.jpg',
+                'title' => 'iMac M1 và iMac M3: Nên chọn mua mẫu nào?',
+                'cover_image' => 'news/tt3.webp',
 
             ],
             [
-                'title' => 'Phụ kiện công nghệ HOT',
-                'cover_image' => 'accessories_hot.jpg',
+                'title' => '7 Cập nhật tính năng trên iOS 17.2 beta 2',
+                'cover_image' => 'news/tt2.webp',
 
             ],
             [
-                'title' => 'Thời trang Xuân Hè',
-                'cover_image' => 'fashion_spring.jpg',
-
-            ],
-            [
-                'title' => 'Sự kiện ra mắt sản phẩm mới',
-                'cover_image' => 'new_event.jpg',
+                'title' => 'Apple đang phát triển công nghệ pin mới: Sạc nhanh và tuổi thọ pin cao hơn',
+                'cover_image' => 'news/tt1.webp',
 
             ],
         ];
