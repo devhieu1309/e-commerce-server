@@ -17,6 +17,13 @@ class NewsController extends Controller
         return  response()->json($news);
     }
 
+    //Hien thi tin tuc moi nhat 
+    public function displayFeaturedNews()
+    {
+        $new = News::orderBy('created_at', 'desc')->get();
+        return response()->json($new);
+    }
+
     public function store(StoreNewsRequests $request)
     {
 
