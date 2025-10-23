@@ -61,7 +61,6 @@ class PromotionController extends Controller
             'message' => 'Cập nhật chương trình khuyến mãi thành công.',
             'data' => $promotion
         ], 200);
-
     }
 
     /**
@@ -78,4 +77,5 @@ class PromotionController extends Controller
             'deleted_id' => $id
         ]);
     }
+    
 }

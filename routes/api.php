@@ -33,6 +33,7 @@ Route::apiResource('users', UserController::class);
 // chương trình khuyến mãi
 Route::apiResource('promotions', PromotionController::class);
 
+
 //phương thanh toán
 Route::get('/order-status/search', [OrderStatusController::class, 'search']);
 Route::get('/order-status', [OrderStatusController::class, 'index']);
