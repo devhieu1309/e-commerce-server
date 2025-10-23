@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -74,3 +75,7 @@ Route::post('/newsBlocks', [NewsBlocksController::class, 'store']);
 Route::patch('/newsBlocks/{id}', [NewsBlocksController::class, 'update']);
 Route::get('/newsBlocks/{id}', [NewsBlocksController::class, 'show']);
 Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
+
+//Đăng ký & Đăng Nhập 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
