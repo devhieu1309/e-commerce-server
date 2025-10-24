@@ -13,7 +13,7 @@ class VideoReviewRequest extends FormRequest
     {
         return true;
     }
-
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -21,17 +21,28 @@ class VideoReviewRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'product_id' => 'required|exists:products,id',
             'title'      => 'required|string|min:5|max:255',
-            'url'        => [
+            'is_visible'  => 'boolean',
+            'source_type' => 'required|in:youtube,upload',
+        ];
+
+        // Nếu là video từ youTube
+        if ($this->input('source_type') === 'youtube') {
+            $rules['url'] = [
                 'required',
                 'string',
                 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)[A-Za-z0-9_\-]{6,}/i'
-            ],
-            // 'url' => 'required|url',
-            'is_visible' => 'boolean',
-        ];
+            ];
+        }
+
+        // Nếu là video upload từ máy
+        if ($this->input('source_type') === 'upload') {
+            $rules['video'] = 'required|file|mimes:mp4,mov,avi,mkv|max:51200';
+        }
+
+        return $rules;
     }
 
     public function messages(): array
@@ -44,7 +55,12 @@ class VideoReviewRequest extends FormRequest
             'title.max' => 'Tiêu đề không được vượt quá :max ký tự.',
             'url.required' => 'Vui lòng nhập đường dẫn video.',
             'url.string'   => 'Đường dẫn video phải là chuỗi ký tự.',
-            'url.url' => 'Đường dẫn video không hợp lệ.',
+            'url.regex' => 'Đường dẫn video không hợp lệ.',
+            'source_type.required'=> 'Vui lòng chọn loại nguồn video.',
+            'source_type.in'      => 'Loại nguồn video không hợp lệ.',
+            'video.required'      => 'Vui lòng chọn file video để upload.',
+            'video.mimes'         => 'Chỉ chấp nhận file mp4, mov, avi hoặc mkv.',
+            'video.max'           => 'Dung lượng tối đa là 50MB.',
         ];
     }
 }

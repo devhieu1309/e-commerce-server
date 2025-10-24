@@ -12,10 +12,11 @@ return new class extends Migration {
     {
         Schema::create('video_reviews', function (Blueprint $table) {
             $table->id('video_id');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products', 'product_id')->onDelete('cascade');
             $table->string('title');
+            $table->enum('source_type', ['youtube', 'upload'])->default('youtube');
             $table->string('url');
-            $table->boolean('is_visible')->default(true);
+            $table->boolean('is_visible')->default(false);
             $table->timestamps();
         });
     }
