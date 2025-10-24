@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
-use App\Models\Category;
-use App\Models\Variation;
+use App\Http\Requests\StoreVariationRequest;
+use App\Http\Requests\UpdateVariationRequest;
+use App\Services\VariationService;
 use Exception;
 use Illuminate\Http\Request;
-use App\Services\CategoryService;
 
-class CategoryController extends Controller
+class VariationController extends Controller
 {
-    protected $categoryService;
+    protected $variationService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(VariationService $variationService)
     {
-        $this->categoryService = $categoryService;
+        $this->variationService = $variationService;
     }
 
     /**
@@ -25,11 +23,11 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-            $categories = $this->categoryService->getAll();
+            $variations = $this->variationService->getAll();
 
             return response()->json([
                 'success' => true,
-                'categories' => $categories
+                'variations' => $variations
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -42,16 +40,16 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage. 
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreVariationRequest $request)
     {
         $data = $request->validated();
         try {
-            $category = $this->categoryService->saveCategoryData($data);
+            $variation = $this->variationService->saveCategoryData($data);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Danh mục đã được tạo thành công.',
-                'data' => $category
+                'message' => 'Biến thể sản phẩm đã được tạo thành công.',
+                'data' => $variation
             ], 201);
         } catch (Exception $e) {
             return response()->json([
@@ -67,10 +65,10 @@ class CategoryController extends Controller
     public function show($id)
     {
         try {
-            $category = $this->categoryService->getById($id);
+            $variation = $this->variationService->getById($id);
             return response()->json([
                 'success' => false,
-                'category' => $category
+                'variation' => $variation
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -83,17 +81,17 @@ class CategoryController extends Controller
     /**
     * Update the specified resource in storage.
     */
-    public function update(UpdateCategoryRequest $request, $id)
+    public function update(UpdateVariationRequest $request, $id)
     {
         $data = $request->validated();
 
         try {
-            $category = $this->categoryService->updateCategory($data, $id);
+            $variation = $this->variationService->updateCategory($data, $id);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Danh mục đã được cập nhật thành công.',
-                'data' => $category
+                'message' => 'Biến thể sản phẩm đã được cập nhật thành công.',
+                'data' => $variation
             ], 201);
         } catch (Exception $e) {
             return response()->json([
@@ -109,12 +107,12 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         try {
-            $category = $this->categoryService->deleteById($id);
+            $variation = $this->variationService->deleteById($id);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Xóa danh mục thành công.',
-                'category' => $category,
+                'message' => 'Xóa biến thể sản phẩm thành công.',
+                'variation' => $variation,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -127,12 +125,12 @@ class CategoryController extends Controller
     /**
     * Get varations by category
     */
-    public function getVariationByCategory(Category $category)
-    {
-        $variations = $category->variations; 
-        return response()->json([
-            'category' => $category,
-            'variations' => $variations,
-        ]);
-    }
+    // public function getVariationByCategory(Category $category)
+    // {
+    //     $variations = $category->variations; 
+    //     return response()->json([
+    //         'category' => $category,
+    //         'variations' => $variations,
+    //     ]);
+    // }
 }
