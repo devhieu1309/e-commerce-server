@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id('video_id');
             $table->foreignId('product_id')->constrained('products', 'product_id')->onDelete('cascade');
             $table->string('title');
+            $table->enum('source_type', ['youtube', 'upload'])->default('youtube');
             $table->string('url');
             $table->boolean('is_visible')->default(false);
             $table->timestamps();

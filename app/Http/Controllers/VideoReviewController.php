@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VideoReview;
 use App\Http\Requests\VideoReviewRequest;
+use Illuminate\Support\Facades\Storage;
 
 class VideoReviewController extends Controller
 {
@@ -38,25 +39,21 @@ class VideoReviewController extends Controller
         return response()->json($videos);
     }
 
-    // Thêm mới video review
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'product_id' => 'required|exists:products,id',
-    //         'title' => 'required|string|max:255',
-    //         'url' => 'required|string|max:255',
-    //         'is_visible' => 'boolean',
-    //     ]);
-
-    //     $video = VideoReview::create($validated);
-
-    //     return response()->json($video, 201);
-    // }
 
     public function store(VideoReviewRequest $request)
     {
+
         try {
-            $review = VideoReview::create($request->validated());
+            $data = $request->validated();
+
+            if ($request->input('source_type') === 'upload' && $request->hasFile('video')) {
+                $path = $request->file('video')->store('videos', 'public');
+                $data['url'] = Storage::url($path);
+            }
+
+            $review = VideoReview::create($data);
+
+            // $review = VideoReview::create($request->validated());
 
             return response()->json([
                 'success' => true,
@@ -76,21 +73,65 @@ class VideoReviewController extends Controller
     {
         $video = VideoReview::findOrFail($id);
 
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'url' => 'sometimes|required|string|max:255',
-            'is_visible' => 'boolean',
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'source_type' => 'required|in:youtube,upload',
+            'product_id' => 'required|exists:products,id',
+            'url' => 'nullable|string',
+            'video' => 'nullable|file|mimes:mp4,mov,avi,mkv|max:20480',
         ]);
 
-        $video->update($validated);
+        $video->title = $request->title;
+        $video->product_id = $request->product_id;
+        $video->source_type = $request->source_type;
 
-        return response()->json($video);
+        //Trường hợp: Nguồn là YouTube
+        if ($request->source_type === 'youtube') {
+            // Nếu trước đó là upload => xóa file cũ
+            if ($video->url && str_starts_with($video->url, '/storage/')) {
+                $oldPath = str_replace('/storage/', '', $video->url);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+
+            // Gán link YouTube mới
+            $video->url = $request->url;
+        }
+
+        //Trường hợp: Nguồn là upload từ máy
+        elseif ($request->source_type === 'upload') {
+            if ($request->hasFile('video')) {
+                // Có video mới → xóa file cũ
+                if ($video->url && str_starts_with($video->url, '/storage/')) {
+                    $oldPath = str_replace('/storage/', '', $video->url);
+                    if (Storage::disk('public')->exists($oldPath)) {
+                        Storage::disk('public')->delete($oldPath);
+                    }
+                }
+
+                // Lưu video mới
+                $path = $request->file('video')->store('videos', 'public');
+                $video->url = '/storage/' . $path;
+            }
+        }
+
+        $video->save();
+
+        return response()->json([
+            'message' => 'Cập nhật video review thành công',
+            'data' => $video,
+        ]);
     }
 
     // Xóa video review
     public function destroy($id)
     {
         $video = VideoReview::findOrFail($id);
+        if ($video->source_type === 'upload' && $video->url) {
+            $path = str_replace('/storage/', '', $video->url);
+            Storage::disk('public')->delete($path);
+        }
         $video->delete();
 
         return response()->json([
