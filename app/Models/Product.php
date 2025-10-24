@@ -15,9 +15,16 @@ class Product extends Model
     protected $primaryKey = 'product_id';
 
     protected $fillable = [
-        'name',
+        'product_name',
+        'description',
+        'image',
+        'category_id',
         'created_at',
         'updated_at'
     ];
-    
+
+    public function items()
+    {
+        return $this->hasMany(ProductItem::class);
+    }
 }

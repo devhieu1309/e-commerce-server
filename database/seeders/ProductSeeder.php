@@ -15,30 +15,30 @@ class ProductSeeder extends Seeder
     {
         $products = [
             [
-                'name' => 'Iphone 15',
+                'product_name' => 'Iphone 15',
                 
             ],
             [
-                'name' => 'Samsung Galaxy S23',
+                'product_name' => 'Samsung Galaxy S23',
                 
             ],
             [
-                'name' => 'Xiaomi Mi 13',
+                'product_name' => 'Xiaomi Mi 13',
                 
             ],
             [
-                'name' => 'OnePlus 11',
+                'product_name' => 'OnePlus 11',
                 
             ],
             [
-                'name' => 'Google Pixel 7',
+                'product_name' => 'Google Pixel 7',
                 
             ],
         ];
 
         foreach ($products as $product) {
             Product::create([
-                'name' => $product['name'],
+                'product_name' => $product['product_name'],
             ]);
         }
     }

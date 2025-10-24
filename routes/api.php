@@ -22,6 +22,7 @@ Route::get('/user', function (Request $request) {
 Route::get('categories/{category}/variations', [CategoryController::class, 'getVariationByCategory']);
 Route::get('variations/search', [VariationController::class, 'searchByVariationName']);
 Route::apiResource('categories', CategoryController::class);
+Route::apiResource('products', ProductController::class);
 Route::apiResource('variations', VariationController::class);
 // ========== End Minh Hieu ===========
 
