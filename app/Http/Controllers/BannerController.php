@@ -23,6 +23,7 @@ class BannerController extends Controller
     public function store(StoreBannerRequest $request)
     {
 
+
         try {
             // Lấy dữ liệu đã validate
             $data = $request->validated();
@@ -84,7 +85,7 @@ class BannerController extends Controller
             $banner = Banner::findOrFail($id);
             $data = $request->validated();
 
-            if ($request->hasFile('image')) {
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 // Xóa ảnh cũ nếu tồn tại
                 if ($banner->image && Storage::disk('public')->exists($banner->image)) {
                     Storage::disk('public')->delete($banner->image);
@@ -95,6 +96,9 @@ class BannerController extends Controller
                 $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('banner', $imageName, 'public');
                 $data['image'] = 'banner/' . $imageName;
+            } else {
+                // Không có ảnh mới -> giữ ảnh cũ
+                $data['image'] = $banner->image;
             }
 
             $banner->update($data);
@@ -107,6 +111,7 @@ class BannerController extends Controller
             return response()->json([
                 'message' => 'Cập nhật Banner thất bại!',
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ], 500);
         }
     }
