@@ -9,26 +9,33 @@ use App\Http\Requests\VideoReviewRequest;
 
 class VideoReviewController extends Controller
 {
-     public function index(Request $request)
+    public function index(Request $request)
     {
-        $query = VideoReview::with('product');
+        $query = VideoReview::with('product')->orderByDesc('video_id');
 
         // Lọc theo từ khóa
-        // if ($search = $request->input('search')) {
-        //     $query->where('title', 'like', "%$search%");
-        // }
+        if ($search = $request->input('search')) {
+            $query->where('title', 'like', "%$search%");
+        }
 
         // // Lọc theo sản phẩm
-        // if ($productId = $request->input('product_id')) {
-        //     $query->where('product_id', $productId);
-        // }
+        if ($productId = $request->input('product_id')) {
+            $query->where('product_id', $productId);
+        }
 
-        // // Lọc theo trạng thái
-        // if ($request->has('is_visible')) {
-        //     $query->where('is_visible', $request->boolean('is_visible'));
-        // }
+        // Lọc theo trạng thái
+        if ($request->has('is_visible')) {
+            $query->where('is_visible', $request->boolean('is_visible'));
+        }
 
-        return response()->json($query->orderByDesc('video_id')->get());
+
+        $limit = $request->query('limit', 10);
+        $page = $request->query('page', 1);
+
+        // $videos = $query->limit($limit)->get();
+        $videos = $query->skip(($page - 1) * $limit)->take($limit)->get();
+
+        return response()->json($videos);
     }
 
     // Thêm mới video review
@@ -91,7 +98,7 @@ class VideoReviewController extends Controller
             'message' => 'Xóa video review thành công',
             'deleted_id' => $id
         ]);
-           
+
     }
 
     // Ẩn/hiện video

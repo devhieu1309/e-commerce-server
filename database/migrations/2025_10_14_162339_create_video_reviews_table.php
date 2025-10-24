@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('product_id')->constrained('products', 'product_id')->onDelete('cascade');
             $table->string('title');
             $table->string('url');
-            $table->boolean('is_visible')->default(true);
+            $table->boolean('is_visible')->default(false);
             $table->timestamps();
         });
     }

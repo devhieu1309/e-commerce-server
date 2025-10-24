@@ -8,10 +8,12 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\NewsBlocksController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PromotionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -42,6 +44,11 @@ Route::patch('/video-reviews/{id}', [VideoReviewController::class, 'update']);
 Route::delete('/video-reviews/{id}', [VideoReviewController::class, 'destroy']);
 Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggleVisibility']);
 
+Route::apiResource('shipping_methods', ShippingMethodController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('users', UserController::class);
+// chương trình khuyến mãi
+Route::apiResource('promotions', PromotionController::class);
 //phương thanh toán
 Route::get('/order-status/search', [OrderStatusController::class, 'search']);
 Route::get('/order-status', [OrderStatusController::class, 'index']);
@@ -62,7 +69,9 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 
 //tin tức
 Route::get('news/search', [NewsController::class, 'search']);
+Route::get('/news', [NewsController::class, 'displayFeaturedNews']);
 Route::get('/news', [NewsController::class, 'index']);
+
 Route::post('/news', [NewsController::class, 'store']);
 Route::patch('/news/{id}', [NewsController::class, 'update']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
@@ -75,3 +84,7 @@ Route::post('/newsBlocks', [NewsBlocksController::class, 'store']);
 Route::patch('/newsBlocks/{id}', [NewsBlocksController::class, 'update']);
 Route::get('/newsBlocks/{id}', [NewsBlocksController::class, 'show']);
 Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
+
+//Đăng ký & Đăng Nhập 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
