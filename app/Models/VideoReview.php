@@ -17,6 +17,7 @@ class VideoReview extends Model
     protected $fillable = [
         'product_id',
         'title',
+        'source_type',
         'url',
         'is_visible',
         'created_at',
