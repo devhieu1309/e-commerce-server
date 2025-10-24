@@ -18,7 +18,8 @@ class VideoReviewFactory extends Factory
     {
         return [
             'product_id' => rand(1, 5),
-            'title' => $this->faker->sentence(4),
+            // 'title' => $this->faker->sentence(4),
+            'title' => "demo" . $this->faker->unique()->numberBetween(1, 1000), 
             'url' => 'https://www.youtube.com/embed/' . $this->faker->regexify('[A-Za-z0-9_-]{11}'),
             'is_visible' => $this->faker->boolean(80),
         ];

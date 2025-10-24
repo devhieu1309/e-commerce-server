@@ -4,19 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-          Schema::create('products', function (Blueprint $table) {
-            $table->bigIncrements('product_id');
-            $table->string('product_name', 100);
-            $table->text('description')->nullable(false);
+        Schema::create('product_items', function (Blueprint $table) {
+            $table->bigIncrements('product_item_id');
+            $table->string('SKU', 50);
+            $table->integer('qty_in_stock')->nullable(false);
+            $table->decimal('price', 10, 2)->nullable(false);
             $table->string('image')->nullable(false);
-            $table->foreignId('category_id')
-                ->constrained('categories', 'category_id')
+            $table->foreignId('product_id')
+                ->constrained('products', 'product_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->timestamps();
@@ -28,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('product_items');
     }
 };
