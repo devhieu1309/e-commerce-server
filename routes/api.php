@@ -17,12 +17,10 @@ Route::get('/categories/{id}', [CategoryController::class, 'show']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
 //phương thanh toán
-Route::get('/order-status/search', [OrderStatusController::class, 'search']);
-Route::get('/order-status', [OrderStatusController::class, 'index']);
-Route::post('/order-status', [OrderStatusController::class, 'store']);
-Route::patch('/order-status/{id}', [OrderStatusController::class, 'update']);
-Route::get('/order-status/{id}', [OrderStatusController::class, 'show']);
-Route::delete('/order-status/{id}', [OrderStatusController::class, 'destroy']);
+Route::get('orderStatus/search', [OrderStatusController::class, 'search']);
+Route::get('orderStatus/{orderstatus}/variations', [OrderStatusController::class, 'getVariationByOrderStatus']);
+Route::apiResource('orderStatus', OrderStatusController::class);
+
 
 
 //Banner

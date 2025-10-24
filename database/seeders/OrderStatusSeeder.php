@@ -18,44 +18,15 @@ class OrderStatusSeeder extends Seeder
     {
         $orderStatues = [
             [
-                'status' => 'Đang chờ xử lý',
+                'status' => 'Thanh Toán MOMO',
             ],
             [
-                'status' => 'Đang chuẩn bị hàng',
+                'status' => 'Thanh Toán VN Pay',
             ],
             [
-                'status' => 'Đã xác nhận đơn hàng',
+                'status' => 'Thanh Toán Tiền Mặt',
             ],
-            [
-                'status' => 'Đang vận chuyển',
-            ],
-            [
-                'status' => 'Đang giao hàng',
-            ],
-            [
-                'status' => 'Đang ở đơn vị vận chuyển',
-            ],
-            [
-                'status' => 'Đã giao hàng',
-            ],
-            [
-                'status' => 'Đã hủy đơn hàng',
-            ],
-            [
-                'status' => 'Hoàn trả hàng',
-            ],
-            [
-                'status' => 'Giao hàng không thành công',
-            ],
-            [
-                'status' => 'Đơn hàng bị từ chối',
-            ],
-            [
-                'status' => 'Đã trả hàng thành công',
-            ],
-            [
-                'status' => 'Đơn hàng bị hủy bởi hệ thống',
-            ],
+
 
         ];
 
