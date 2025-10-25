@@ -23,8 +23,13 @@ class Product extends Model
         'updated_at'
     ];
 
+    // public function items()
+    // {
+    //     return $this->hasMany(ProductItem::class, 'product_id', 'id');
+    // }
+
     public function items()
     {
-        return $this->hasMany(ProductItem::class);
+        return $this->hasMany(ProductItem::class, 'product_id', 'id');
     }
 }
