@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class News_Blocks extends Model
+class NewsBlocks extends Model
 {
     //
     use HasFactory;
@@ -22,6 +22,6 @@ class News_Blocks extends Model
 
     public function news()
     {
-        return $this->belongsTo(News::class, 'news_id');
+        return $this->belongsTo(News::class, 'news_id', 'id');
     }
 }

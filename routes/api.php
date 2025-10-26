@@ -70,10 +70,10 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 Route::get('news/search', [NewsController::class, 'search']);
 Route::get('/news', [NewsController::class, 'displayFeaturedNews']);
 Route::get('/news', [NewsController::class, 'index']);
-
 Route::post('/news', [NewsController::class, 'store']);
 Route::patch('/news/{id}', [NewsController::class, 'update']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
+Route::get('/news/{id}/blocks', [NewsController::class, 'showNewsBlocks']);
 Route::delete('/news/{id}', [NewsController::class, 'destroy']);
 
 //bài viết

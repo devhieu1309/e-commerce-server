@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255)->nullable(false);
             $table->text('content')->nullable(false);
-            $table->string('image', 100)->nullable(false);
+            $table->string('image', 100)->nullable(true);
             $table->integer('position')->default(0);
             $table->foreignId('news_id')
                 ->constrained('news')
