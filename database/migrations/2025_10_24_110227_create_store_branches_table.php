@@ -12,7 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('store_branches', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('store_branch_id');
+            $table->string('name', 255);
+            $table->string('phone_number', 20)->nullable(false);
+            $table->string('email', 80)->nullable(false);
+            $table->string('opening_hours', 50)->nullable(false);
+            $table->foreignId('address_id')
+                ->constrained('addresses', 'address_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->decimal('latitude', 9, 6)->nullable(); // Vĩ độ
+            $table->decimal('longitude', 9, 6)->nullable(); // Kinh độ
             $table->timestamps();
         });
     }

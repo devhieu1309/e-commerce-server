@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('url');
             $table->boolean('is_visible')->default(false);
+            $table->string('map_link', 200)->nullable(); // Link Google Maps
             $table->timestamps();
         });
     }
