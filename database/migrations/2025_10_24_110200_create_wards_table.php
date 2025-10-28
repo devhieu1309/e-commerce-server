@@ -19,10 +19,6 @@ return new class extends Migration
                 ->constrained('provinces', 'provinces_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('administrative_unit_id')
-                ->constrained('administrative_units', 'administrative_unit_id')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }

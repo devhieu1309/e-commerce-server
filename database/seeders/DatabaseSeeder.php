@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call(VariationSeeder::class);
 
         $this->call(PromotionSeeder::class);
+        $this->call(ProvinceSeeder::class);
+        $this->call(WardSeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([
