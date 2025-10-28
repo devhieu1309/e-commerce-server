@@ -35,8 +35,14 @@ class ProductConfiguaration extends Model
         'variation_option_id',
     ];
 
-    public function variationOption()
+    // public function variationOption()
+    // {
+    //     return $this->belongsTo(VariationOption::class, 'variation_option_id', 'variation_option_id');
+    // }
+
+     public function variationOption()
     {
-        return $this->belongsTo(VariationOption::class, 'variation_option_id', 'variation_option_id');
+        return $this->belongsTo(VariationOption::class, 'variation_option_id', 'id');
     }
+
 }
