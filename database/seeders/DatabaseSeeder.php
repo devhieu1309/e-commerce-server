@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\News_Blocks;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\VariationOption;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(VideoReviewSeeder::class);
 
         $this->call(PromotionSeeder::class);
+        $this->call(VariationOptionSeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([

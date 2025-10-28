@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->bigIncrements('product_id');
             $table->string('product_name', 100);
             $table->text('description')->nullable(false);
-            $table->string('image')->nullable(false);
+            // $table->string('image')->nullable(false);
             $table->foreignId('category_id')
                 ->constrained('categories', 'category_id')
                 ->onUpdate('cascade')
