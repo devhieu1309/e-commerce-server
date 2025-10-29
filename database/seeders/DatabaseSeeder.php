@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\News_Blocks;
+use App\Models\Product;
+use App\Models\ProductItem;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\VariationOption;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,7 +32,14 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderStatusSeeder::class);
         $this->call(NewsBlocksSeeder::class);
         $this->call(VariationSeeder::class);
+        $this->call(ProductSeeder::class);
+        // $this->call(VideoReviewSeeder::class);
+        
         $this->call(PromotionSeeder::class);
+        $this->call(VariationOptionSeeder::class);
+        $this->call(ProductSeeder::class);
+        $this->call(ProductItemSeeder::class);
+        $this->call(ProductConfigurationSeeder::class);
         $this->call(ProvinceSeeder::class);
         $this->call(WardSeeder::class);
         $this->call(AddressSeeder::class);

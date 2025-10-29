@@ -5,17 +5,41 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
 use App\Models\Promotion;
+use App\Services\PromotionService;
+use Exception;
 use Illuminate\Http\Request;
 
 class PromotionController extends Controller
 {
+
+    protected $promotionService;
+
+    // Inject service vào constructor
+    public function __construct(PromotionService $promotionService)
+    {
+        $this->promotionService = $promotionService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        try {
+            $promotions = $this->promotionService->getAll();
+            return response()->json([
+                'success' => true,                
+                'promotions' => $promotions
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+        // lay danh sach
         $promotions = Promotion::all();
-        return response()->json(['success' => true, 'promotions' => $promotions], 200);
+        return response() -> json($promotions);
     }
 
     /**
@@ -23,14 +47,20 @@ class PromotionController extends Controller
      */
     public function store(StorePromotionRequest $request)
     {
-        $validated = $request->validated();
-        $promotion = Promotion::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Chương trình khuyến mãi đã được tạo thành công.',
-            'data' => $promotion
-        ], 201);
+        $data = $request->validated();
+        try {
+            $promotion = $this->promotionService->savePromotionData($data);
+            return response()->json([
+                'success' => true,
+                'message' => 'Thêm chương trình khuyến mãi thành công.',
+                'data' => $promotion
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }    
     }
 
     /**
@@ -38,13 +68,18 @@ class PromotionController extends Controller
      */
     public function show($id)
     {
-        $promotion = Promotion::findOrFail($id);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Lấy thông tin chương trình khuyến mãi thành công.',
-            'data' => $promotion
-        ], 200);
+        try {
+            $promotion = $this->promotionService->getById($id);
+            return response()->json([
+                'success' => true,
+                'promotion' => $promotion
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -52,15 +87,22 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, $id)
     {
-        $promotion = Promotion::findOrFail($id);
+        $data = $request->validated();
 
-        $promotion->update($request->validated());
+        try {
+            $promotion = $this->promotionService->updatePromotion($data, $id);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Cập nhật chương trình khuyến mãi thành công.',
-            'data' => $promotion
-        ], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật chương trình khuyến mãi thành công.',
+                'data' => $promotion
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -68,14 +110,20 @@ class PromotionController extends Controller
      */
     public function destroy($id)
     {
-        $promotion = Promotion::findOrFail($id);
-        $promotion->delete();
+        try {
+            $promotion = $this->promotionService->deleteById($id);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Xóa chương trình khuyến mãi thành công',
-            'deleted_id' => $id
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Xóa chương trình khuyến mãi thành công.',
+                'promotion' => $promotion
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
     
 }

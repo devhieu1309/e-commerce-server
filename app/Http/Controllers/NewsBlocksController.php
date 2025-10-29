@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNewsBlocksRequests;
 use App\Http\Requests\UpdateNewsBlocksRequests;
-use App\Models\News_Blocks;
+use App\Models\NewsBlocks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +15,7 @@ class NewsBlocksController extends Controller
     //
     public function index()
     {
-        $newsBlocks = News_Blocks::all();
+        $newsBlocks = NewsBlocks::all();
         return  response()->json($newsBlocks);
     }
 
@@ -36,7 +36,7 @@ class NewsBlocksController extends Controller
             );
 
             // Lưu thông tin banner vào database
-            $newsBlocks = News_Blocks::create([
+            $newsBlocks = NewsBlocks::create([
                 'title'     => $data['title'],
                 'content'     => $data['content'],
                 'image'     => 'newsBlocks/' . $imageName,
@@ -58,14 +58,14 @@ class NewsBlocksController extends Controller
 
     public function show($id)
     {
-        $newsBlocks = News_Blocks::findOrFail($id);
+        $newsBlocks = NewsBlocks::findOrFail($id);
 
         return response()->json($newsBlocks);
     }
 
     public function destroy($id)
     {
-        $newsBlocks = News_Blocks::findOrFail($id);
+        $newsBlocks = NewsBlocks::findOrFail($id);
         $newsBlocks->delete();
 
         return response()->json([
@@ -80,7 +80,7 @@ class NewsBlocksController extends Controller
     {
 
         try {
-            $newsBlocks = News_Blocks::findOrFail($id);
+            $newsBlocks = NewsBlocks::findOrFail($id);
             $data = $request->validated();
 
             if ($request->hasFile('image')) {
@@ -116,10 +116,10 @@ class NewsBlocksController extends Controller
         $title = trim($request->query('title'));
 
         if (!$title) {
-            return response()->json(News_Blocks::all());
+            return response()->json(NewsBlocks::all());
         }
 
-        $newsBlocks = News_Blocks::where('title', 'LIKE', '%' . $title . '%')
+        $newsBlocks = NewsBlocks::where('title', 'LIKE', '%' . $title . '%')
             // chỉ lấy những banner chứa cụm từ gần giống nhất
             ->orderByRaw(
                 "CASE 

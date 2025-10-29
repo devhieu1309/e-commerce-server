@@ -2,44 +2,80 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Product;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $products = [
-            [
-                'product_name' => 'Iphone 15',
-                
-            ],
-            [
-                'product_name' => 'Samsung Galaxy S23',
-                
-            ],
-            [
-                'product_name' => 'Xiaomi Mi 13',
-                
-            ],
-            [
-                'product_name' => 'OnePlus 11',
-                
-            ],
-            [
-                'product_name' => 'Google Pixel 7',
-                
-            ],
-        ];
+        $now = Carbon::now();
 
-        foreach ($products as $product) {
-            Product::create([
-                'product_name' => $product['product_name'],
-            ]);
-        }
+        DB::table('products')->insert([
+            [
+                'product_name' => 'iPhone 15 Pro Max',
+                'description' => 'Flagship mới nhất của Apple với chip A17 Pro và khung titanium.',
+                'category_id' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Samsung Galaxy S24 Ultra',
+                'description' => 'Siêu phẩm Galaxy S với màn hình Dynamic AMOLED 2X 120Hz.',
+                'category_id' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Xiaomi 14 Ultra',
+                'description' => 'Camera Leica đỉnh cao, sạc nhanh siêu tốc.',
+                'category_id' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Samsung Galaxy A55',
+                'description' => 'Điện thoại tầm trung mạnh mẽ với camera sắc nét.',
+                'category_id' => 2,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Xiaomi Redmi Note 13 Pro',
+                'description' => 'Hiệu năng vượt trội trong phân khúc giá rẻ.',
+                'category_id' => 2,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Oppo Reno 11 F',
+                'description' => 'Thiết kế mỏng nhẹ, chụp chân dung cực đỉnh.',
+                'category_id' => 2,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Vivo V30',
+                'description' => 'Chụp ảnh cực đẹp với camera chân dung Aura Light.',
+                'category_id' => 2,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Google Pixel 8',
+                'description' => 'Chụp ảnh AI cực xịn từ Google.',
+                'category_id' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'product_name' => 'Realme 12+',
+                'description' => 'Điện thoại hiệu năng tốt trong tầm giá.',
+                'category_id' => 2,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+        ]);
     }
 }

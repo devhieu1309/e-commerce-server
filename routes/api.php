@@ -54,12 +54,11 @@ Route::apiResource('promotions', PromotionController::class);
 // chi nhánh cửa hàng
 Route::apiResource('store_branches', StoreBranchController::class);
 //phương thanh toán
-Route::get('/order-status/search', [OrderStatusController::class, 'search']);
-Route::get('/order-status', [OrderStatusController::class, 'index']);
-Route::post('/order-status', [OrderStatusController::class, 'store']);
-Route::patch('/order-status/{id}', [OrderStatusController::class, 'update']);
-Route::get('/order-status/{id}', [OrderStatusController::class, 'show']);
-Route::delete('/order-status/{id}', [OrderStatusController::class, 'destroy']);
+
+Route::get('orderStatus/search', [OrderStatusController::class, 'search']);
+Route::get('orderStatus/{orderstatus}/variations', [OrderStatusController::class, 'getVariationByOrderStatus']);
+Route::apiResource('orderStatus', OrderStatusController::class);
+
 
 
 //Banner
@@ -75,10 +74,10 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 Route::get('news/search', [NewsController::class, 'search']);
 Route::get('/news', [NewsController::class, 'displayFeaturedNews']);
 Route::get('/news', [NewsController::class, 'index']);
-
 Route::post('/news', [NewsController::class, 'store']);
 Route::patch('/news/{id}', [NewsController::class, 'update']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
+Route::get('/news/{id}/blocks', [NewsController::class, 'showNewsBlocks']);
 Route::delete('/news/{id}', [NewsController::class, 'destroy']);
 
 //bài viết
