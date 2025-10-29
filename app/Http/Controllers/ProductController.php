@@ -33,6 +33,25 @@ class ProductController extends Controller
     //     return response()->json($products);
     // }
 
+    public function index()
+    {
+        // return "MINH HIEU";
+        try {
+            // Gọi Service để lấy danh sách sản phẩm
+            $products = $this->productService->getAllProductsWithItems();
+
+            return response()->json([
+                'message' => 'Lấy danh sách sản phẩm thành công',
+                'data' => $products
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Lỗi khi lấy danh sách sản phẩm: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
     public function store(Request $request)
     {
         $uploadedPaths = [];
@@ -68,8 +87,8 @@ class ProductController extends Controller
 
 
                         $uploadedPaths[] = $path;
-                    } 
-                    
+                    }
+
                     //  2.b Tạo product_item
                     $dataProductItem = [
                         'product_id'   => $product->product_id,
