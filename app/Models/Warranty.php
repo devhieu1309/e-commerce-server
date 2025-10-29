@@ -12,7 +12,7 @@ class Warranty extends Model
 
     protected $table = 'warranty';
     protected $fillable = [
-        'serial_numble',
+        'serial_number',
         'warranty_status',
         'warranty_start',
         'warranty_expiry',

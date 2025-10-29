@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\WarrantyController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -87,3 +88,7 @@ Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
 //Đăng ký & Đăng Nhập 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+//Tìm kiếm thông tin bảo hành bằng số serial
+Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySerial']);
+Route::get('/warranty', [WarrantyController::class, 'index']);

@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
         $this->call(ProductItemSeeder::class);
         $this->call(ProductConfigurationSeeder::class);
+        $this->call(WarrantySeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([
