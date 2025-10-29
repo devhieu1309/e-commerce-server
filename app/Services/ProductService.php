@@ -26,6 +26,39 @@ class ProductService
         $this->productConfiguarationRepository = $productConfiguarationRepository;
     }
 
+    public function getAllProductsWithItems()
+    {
+        $products = $this->productRepository->getAllWithItems();
+
+        return $products->map(function ($product) {
+            return [
+                'product_id' => $product->product_id,
+                'product_name' => $product->product_name,
+                'description' => $product->description,
+                'category_id' => $product->category_id,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at,
+                'items' => $product->items->map(function ($item) {
+                    return [
+                        'product_item_id' => $item->product_item_id,
+                        'sku' => $item->SKU,
+                        'qty_in_stock' => $item->qty_in_stock,
+                        'price' => $item->price,
+                        'image' => $item->image ? asset($item->image) : null,
+                        'variation_options' => $item->variationOptions->map(function ($option) {
+                            return [
+                                'variation_option_id' => $option->variation_option_id,
+                                'variation_option_name' => $option->value,
+                                'variation_id' => $option->variation_id,
+                            ];
+                        })
+                    ];
+                })
+            ];
+        });
+    }
+
+
     public function saveProductData($data)
     {
         $result = $this->productRepository->save($data);
