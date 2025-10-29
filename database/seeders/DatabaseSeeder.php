@@ -44,5 +44,8 @@ class DatabaseSeeder extends Seeder
         $this->call(WardSeeder::class);
         $this->call(AddressSeeder::class);
         $this->call(StoreBranchSeeder::class);
+
+        $this->call(WarrantySeeder::class);
+        
     }
 }
