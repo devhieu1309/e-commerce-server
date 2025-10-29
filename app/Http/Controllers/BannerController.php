@@ -22,24 +22,25 @@ class BannerController extends Controller
 
     public function store(StoreBannerRequest $request)
     {
-
         try {
-            // Lấy dữ liệu đã validate
             $data = $request->validated();
 
-            // Tạo tên ngẫu nhiên cho ảnh
-            $imageName = Str::random(32) . '.' . $request->file('image')->getClientOriginalExtension();
+            // Kiểm tra có file ảnh không
+            if ($request->hasFile('image')) {
+                $imageName = Str::random(32) . '.' . $request->file('image')->getClientOriginalExtension();
 
-            // Lưu ảnh vào thư mục storage/app/public/banner
-            Storage::disk('public')->put(
-                'banner/' . $imageName,
-                file_get_contents($request->file('image'))
-            );
+                // Lưu vào storage/app/public/banner
+                Storage::disk('public')->put('banner/' . $imageName, file_get_contents($request->file('image')));
 
-            // Lưu thông tin banner vào database
+                $data['image'] = 'banner/' . $imageName;
+            } else {
+                $data['image'] = null;
+            }
+
+            // Lưu vào DB
             $banner = Banner::create([
                 'title'     => $data['title'],
-                'image'     => 'banner/' . $imageName,
+                'image'     => $data['image'],
                 'link_url'  => $data['link_url'],
                 'position'  => $data['position'],
                 'is_active' => (int) $data['is_active'],
@@ -84,7 +85,7 @@ class BannerController extends Controller
             $banner = Banner::findOrFail($id);
             $data = $request->validated();
 
-            if ($request->hasFile('image')) {
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 // Xóa ảnh cũ nếu tồn tại
                 if ($banner->image && Storage::disk('public')->exists($banner->image)) {
                     Storage::disk('public')->delete($banner->image);
@@ -95,6 +96,9 @@ class BannerController extends Controller
                 $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('banner', $imageName, 'public');
                 $data['image'] = 'banner/' . $imageName;
+            } else {
+                // Không có ảnh mới -> giữ ảnh cũ
+                $data['image'] = $banner->image;
             }
 
             $banner->update($data);
@@ -107,6 +111,7 @@ class BannerController extends Controller
             return response()->json([
                 'message' => 'Cập nhật Banner thất bại!',
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ], 500);
         }
     }
