@@ -1,6 +1,6 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+-- SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+-- START TRANSACTION;
+-- SET time_zone = "+00:00";
 
 INSERT INTO `wards` (`wards_id`, `name`, `full_name`, `provinces_id`) VALUES
 ('00004', 'Ba Đình', 'Phường Ba Đình', '01'),

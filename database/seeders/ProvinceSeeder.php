@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Province;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ProvinceSeeder extends Seeder
 {
@@ -57,7 +58,9 @@ class ProvinceSeeder extends Seeder
         //     );
         // }
 
-        $sqlPath = database_path('provinces.sql'); 
-        DB::unprepared(file_get_contents($sqlPath));
+        $sqlPath = database_path('provinces.sql');
+        $sql = file_get_contents($sqlPath); 
+        DB::unprepared($sql); 
+
     }
 }

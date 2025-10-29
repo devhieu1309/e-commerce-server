@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StoreBranchController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -49,6 +50,9 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('users', UserController::class);
 // chương trình khuyến mãi
 Route::apiResource('promotions', PromotionController::class);
+
+// chi nhánh cửa hàng
+Route::apiResource('store_branches', StoreBranchController::class);
 //phương thanh toán
 Route::get('/order-status/search', [OrderStatusController::class, 'search']);
 Route::get('/order-status', [OrderStatusController::class, 'index']);

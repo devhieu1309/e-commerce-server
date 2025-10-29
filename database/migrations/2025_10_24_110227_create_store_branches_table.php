@@ -23,7 +23,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->decimal('latitude', 9, 6)->nullable(); // Vĩ độ
             $table->decimal('longitude', 9, 6)->nullable(); // Kinh độ
-            $table->string('map_link', 200)->nullable(); // Link Google Maps
+            $table->string('map_link', 200)->nullable(false); // Link Google Maps
             $table->timestamps();
         });
     }
