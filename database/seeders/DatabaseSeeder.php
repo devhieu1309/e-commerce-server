@@ -34,19 +34,18 @@ class DatabaseSeeder extends Seeder
         $this->call(VariationSeeder::class);
         $this->call(ProductSeeder::class);
         // $this->call(VideoReviewSeeder::class);
-
+        
         $this->call(PromotionSeeder::class);
         $this->call(VariationOptionSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(ProductItemSeeder::class);
         $this->call(ProductConfigurationSeeder::class);
+        $this->call(ProvinceSeeder::class);
+        $this->call(WardSeeder::class);
+        $this->call(AddressSeeder::class);
+        $this->call(StoreBranchSeeder::class);
+
         $this->call(WarrantySeeder::class);
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
+        
     }
 }
