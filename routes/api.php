@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LocationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -34,7 +35,6 @@ Route::apiResource('variations', VariationController::class);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::apiResource('shipping_methods', ShippingMethodController::class);
-Route::apiResource('users', UserController::class);
 
 // Video Review Routes
 Route::get('/video-reviews', [VideoReviewController::class, 'index']);
@@ -46,7 +46,6 @@ Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggl
 
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
-Route::apiResource('users', UserController::class);
 // chương trình khuyến mãi
 Route::apiResource('promotions', PromotionController::class);
 //phương thanh toán
@@ -84,6 +83,20 @@ Route::patch('/newsBlocks/{id}', [NewsBlocksController::class, 'update']);
 Route::get('/newsBlocks/{id}', [NewsBlocksController::class, 'show']);
 Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
 
+
+
+// ========== Tham Ky ==============================================================
 //Đăng ký & Đăng Nhập 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+//Quản lý tài khoản cá nhân
+Route::get('/provinces', [LocationController::class, 'getProvinces']);
+Route::get('/districts/{province_id}', [LocationController::class, 'getDistricts']);
+Route::get('/wards/{district_id}', [LocationController::class, 'getWards']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+
+
+//crud user
+Route::apiResource('users', UserController::class);
+// ==================================================================================

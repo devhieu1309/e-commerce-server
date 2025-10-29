@@ -10,7 +10,7 @@ use App\Http\Requests\LoginRequest;
 class AuthController extends Controller
 {
     /**
-     * Xử lý đăng ký người dùng mới.
+     * Chức năng sử lý đăng ký.
      */
     public function register(RegisterRequest $request)
     {

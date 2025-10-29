@@ -19,6 +19,11 @@ class DatabaseSeeder extends Seeder
             // ProductSeeder::class,
             // VideoReviewSeeder::class,
             // NewsSeeder::class
+
+            // Dữ liệu hành chính Việt Nam (theo thứ tự: tỉnh -> huyện -> xã)
+            ProvinceSeeder::class,
+            DistrictSeeder::class,
+            WardSeeder::class,
         ]);
 
         $this->call(CategorySeeder::class);

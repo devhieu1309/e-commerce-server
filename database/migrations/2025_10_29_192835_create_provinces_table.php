@@ -6,22 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('addresses', function (Blueprint $table) {
-            $table->id();
+        Schema::create('provinces', function (Blueprint $table) {
+            $table->bigIncrements('id'); // Khóa chính
+            $table->string('name', 100);
+            $table->string('full_name', 255);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('provinces');
     }
 };

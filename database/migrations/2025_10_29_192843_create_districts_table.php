@@ -6,24 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('provinces', function (Blueprint $table) {
-            $table->bigIncrements('provinces_id');
+        Schema::create('districts', function (Blueprint $table) {
+            $table->bigIncrements('id'); // Khóa chính
             $table->string('name', 100);
             $table->string('full_name', 255);
+            $table->unsignedBigInteger('province_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('districts');
     }
 };
