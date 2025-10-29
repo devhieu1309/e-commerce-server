@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('warranty', function (Blueprint $table) {
             $table->id();
-            $table->string('serial_numble', 100)->nullable(false);
+            $table->string('serial_number', 100)->nullable(false);
             $table->enum('warranty_status', ['Còn bảo hành', 'Hết hạn bảo hành'])->default('Còn bảo hành');
             $table->date('warranty_start')->nullable();
             $table->date('warranty_expiry')->nullable();
             $table->string('branch', 100)->nullable();
             $table->text('description')->nullable();
-            $table->foreign('product_id')->references()->on('products')->onDelete('cascade');
+            $table->foreignId('product_id')
+                ->constrained('products', 'product_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

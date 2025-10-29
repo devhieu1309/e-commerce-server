@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PromotionSeeder::class);
         $this->call(VariationOptionSeeder::class);
+        $this->call(WarrantySeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([
