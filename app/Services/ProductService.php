@@ -71,10 +71,10 @@ class ProductService
     //     return $this->productRepository->getAllProduct();
     // }
 
-    // public function getById($id)
-    // {
-    //     return $this->productRepository->getById($id);
-    // }
+    public function getById($id)
+    {
+        return $this->productRepository->getById($id);
+    }
 
     // public function updateCategory($data, $id)
     // {
