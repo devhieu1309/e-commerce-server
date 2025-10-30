@@ -22,7 +22,7 @@ class VideoReviewRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'required|exists:products,product_id',
             'title'      => 'required|string|min:5|max:255',
             'is_visible'  => 'boolean',
             'source_type' => 'required|in:youtube,upload',

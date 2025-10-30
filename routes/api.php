@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
@@ -36,6 +37,8 @@ Route::apiResource('variations', VariationController::class);
 Route::get('/products', [ProductController::class, 'index']);
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('users', UserController::class);
+Route::apiResource('cart', ShoppingCartController::class);
+
 
 // Video Review Routes
 Route::get('/video-reviews', [VideoReviewController::class, 'index']);
