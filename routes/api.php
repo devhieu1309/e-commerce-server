@@ -95,3 +95,6 @@ Route::post('/login', [AuthController::class, 'login']);
 //Tìm kiếm thông tin bảo hành bằng số serial
 Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySerial']);
 Route::get('/warranty', [WarrantyController::class, 'index']);
+
+
+

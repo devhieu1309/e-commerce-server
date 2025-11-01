@@ -1,8 +1,12 @@
 <?php
+
 namespace App\Repositories;
+
 use App\Models\StoreBranch;
-class StoreBranchRepository{
-    
+
+class StoreBranchRepository
+{
+
     /**
      * @var StoreBranch
      */
@@ -19,7 +23,8 @@ class StoreBranchRepository{
     }
 
     // save a new store branch to database
-    public function save($data) {
+    public function save($data)
+    {
         $storeBranch = new $this->storeBranch;
 
         $storeBranch->name = $data['name'];
@@ -33,16 +38,38 @@ class StoreBranchRepository{
         return $storeBranch->fresh(); //Trả về bản ghi mới nhất sau khi lưu
     }
 
+    public function getAllWithAddress()
+    {
+        return StoreBranch::with(['address.ward', 'address.province'])->get();
+    }
     // lấy  danh sách chi nhánh
-    public function getAllStoreBranch(){
+    public function getAllStoreBranch()
+    {
         return $this->storeBranch->get();
     }
 
-    public function getById($id){
-        return $this->storeBranch->where('store_branch_id', $id)->get();
+    public function getById($id)
+    {
+        return $this->storeBranch->with('address.province', 'address.ward')
+            ->where('store_branch_id', $id)
+            ->get();
     }
 
-    public function update($data, $id) {
+    public function update($data, $id)
+    {
+
+        // $storeBranch = $this->storeBranch->with('address')->findOrFail($id);
+
+        // $storeBranch->name = $data['name'];
+        // $storeBranch->phone_number = $data['phone_number'];
+        // $storeBranch->email = $data['email'];
+        // $storeBranch->opening_hours = $data['opening_hours'];
+        // $storeBranch->address_id = $data['address_id'];
+        // $storeBranch->map_link = $data['map_link'];
+
+        // $storeBranch->update();
+        // return $storeBranch;
+
         $storeBranch = $this->storeBranch->find($id);
 
         $storeBranch->name = $data['name'];
@@ -53,13 +80,14 @@ class StoreBranchRepository{
         $storeBranch->map_link = $data['map_link'];
 
         $storeBranch->update();
+
         return $storeBranch;
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $storeBranch = $this->storeBranch->find($id);
         $storeBranch->delete();
         return $storeBranch;
     }
 }
-?>

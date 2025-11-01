@@ -18,10 +18,16 @@ class Address extends Model
         'updated_at'
     ];
 
+    // Mỗi địa chỉ thuộc 1 tỉnh
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'provinces_id', 'provinces_id');
+    }
+
     // Địa chỉ thuộc một phường
     public function ward()
     {
-        return $this->belongsTo(Ward::class);
+        return $this->belongsTo(Ward::class, 'wards_id', 'wards_id');
     }
 
     // Một địa chỉ có thể được dùng bởi nhiều chi nhánh

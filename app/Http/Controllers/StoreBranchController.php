@@ -6,17 +6,20 @@ use App\Http\Requests\StoreStoreBranchRequest;
 use App\Http\Requests\UpdateStoreBranchRequest;
 use App\Models\StoreBranch;
 use App\Services\StoreBranchService;
+use App\Services\AddressService;
 use Exception;
 use Illuminate\Http\Request;
 
 class StoreBranchController extends Controller
 {
     protected $storeBranchService;
+    protected $addressService;
 
     // Inject service vào constructor
-    public function __construct(StoreBranchService $storeBranchService)
+    public function __construct(StoreBranchService $storeBranchService, AddressService $addressService)
     {
         $this->storeBranchService = $storeBranchService;
+        $this->addressService = $addressService;
     }
 
     /**
@@ -24,21 +27,34 @@ class StoreBranchController extends Controller
      */
     public function index()
     {
+
+        // try {
+        //     // Gọi Service để lấy danh sách sản phẩm
+        //     $products = $this->productService->getAllProductsWithItems();
+
+        //     return response()->json([
+        //         'message' => 'Lấy danh sách sản phẩm thành công',
+        //         'data' => $products
+        //     ], 200);
+        // } catch (Exception $e) {
+        //     return response()->json([
+        //         'error' => 'Lỗi khi lấy danh sách sản phẩm: ' . $e->getMessage()
+        //     ], 500);
+        // }
+
         try {
             $storeBranches = $this->storeBranchService->getAll();
             return response()->json([
-                'success' => true,
-                'storeBranches' => $storeBranches
+                'message' => 'Lấy danh sách chi nhánh thành công',
+                'data' => $storeBranches
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
+                'error' => 'Lỗi khi lấy danh sách chi nhánh: ' . $e->getMessage()
             ], 500);
         }
-        // lay danh sach phuong thuc van chuyen
-        $storeBranches = StoreBranch::all();
-        return response()->json($storeBranches);
+        // $storeBranches = StoreBranch::all();
+        // return response()->json($storeBranches);
     }
 
     /**
