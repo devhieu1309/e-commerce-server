@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(VariationSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(VideoReviewSeeder::class);
-        
+
         $this->call(PromotionSeeder::class);
         $this->call(VariationOptionSeeder::class);
         $this->call(ProductSeeder::class);
@@ -48,6 +48,6 @@ class DatabaseSeeder extends Seeder
         $this->call(WarrantySeeder::class);
 
         $this->call(ShoppingCartSeeder::class);
-        
+        $this->call(CommentsSeeder::class);
     }
 }
