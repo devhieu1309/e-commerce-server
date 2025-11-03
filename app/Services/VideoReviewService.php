@@ -39,7 +39,7 @@ class VideoReviewService
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'source_type' => 'required|in:youtube,upload',
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'required|exists:products,product_id',
             'url' => 'nullable|string',
             'video' => 'nullable|file|mimes:mp4,mov,avi,mkv|max:20480',
         ]);

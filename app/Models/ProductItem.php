@@ -35,13 +35,23 @@ class ProductItem extends Model
         return $this->hasMany(ProductConfiguration::class, 'product_item_id', 'product_item_id');
     }
 
-     public function variationOptions()
+    //  public function variationOptions()
+    // {
+    //     return $this->belongsToMany(
+    //         VariationOption::class,
+    //         'product_configurations',  // bảng trung gian
+    //         'product_item_id',        // khóa ngoại trỏ đến product_item
+    //         'variation_option_id'     // khóa ngoại trỏ đến variation_option
+    //     );
+    // }
+
+    public function variationOptions()
     {
         return $this->belongsToMany(
             VariationOption::class,
-            'product_configurations',  // bảng trung gian
-            'product_item_id',        // khóa ngoại trỏ đến product_item
-            'variation_option_id'     // khóa ngoại trỏ đến variation_option
-        );
+            'product_configurations',
+            'product_item_id',
+            'variation_option_id'
+        )->with('variation');
     }
 }

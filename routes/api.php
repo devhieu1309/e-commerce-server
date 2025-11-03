@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
@@ -14,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WarrantyController;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -36,6 +39,8 @@ Route::apiResource('variations', VariationController::class);
 Route::get('/products', [ProductController::class, 'index']);
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('users', UserController::class);
+Route::apiResource('cart', ShoppingCartController::class);
+
 
 // Video Review Routes
 Route::get('/video-reviews', [VideoReviewController::class, 'index']);
@@ -96,5 +101,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySerial']);
 Route::get('/warranty', [WarrantyController::class, 'index']);
 
-
-
+//Bình luận tin tức
+Route::get('comments', [CommentsController::class, 'index']);
+Route::post('comments', [CommentsController::class, 'store']);
