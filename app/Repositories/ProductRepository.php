@@ -31,46 +31,28 @@ class ProductRepository
         return Product::with(['items.variationOptions'])->get();
     }
 
-
-
-    // -----------
-    public function getAllVariation()
+    public function find($id)
     {
-        return $this->product->get();
-    }
-
-    public function getById($id)
-    {
-        return $this->product->where("product_id", $id)->get();
-    }
-
-    public function getProductWithRelations($id)
-    {
-        return $this->product->with([
-            'category',
-            'items.variationOptions.variation'
-        ])->find($id);
-    }
-
-
-    public function update($data, $id)
-    {
-
-        $product = $this->product->find($id);
-
-        $product->product_name = $data['product_name'];
-        $product->category_id = $data['category_id'];
-
-        $product->update();
-
-        return $product;
+        return Product::with(['items.variationOptions'])->find($id);
     }
 
     public function delete($id)
     {
-        $product = $this->product->find($id);
+        $product = Product::with('items.variationOptions')->find($id);
+
+        if (!$product) {
+            return false;
+        }
+
+        // Xóa các biến thể (items) và mối quan hệ
+        foreach ($product->items as $item) {
+            $item->variationOptions()->detach(); // xóa trong bảng pivot product_configurations
+            $item->delete();
+        }
+
+        // Xóa sản phẩm chính
         $product->delete();
 
-        return $product;
+        return $product; 
     }
 }

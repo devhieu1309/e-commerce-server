@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
+use Illuminate\Support\Facades\Storage;
 
 use function Pest\Laravel\call;
 
@@ -29,7 +30,7 @@ class ProductService
     public function getProductDetail($productId)
     {
         // Lấy sản phẩm cùng với quan hệ liên quan
-        $product = $this->productRepository->getProductWithRelations($productId);
+        $product = $this->productRepository->find($productId);
 
         if (!$product) {
             return null;
@@ -58,6 +59,44 @@ class ProductService
         ];
 
         return $data;
+    }
+
+    public function deleteProduct($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $product = $this->productRepository->find($id);
+
+            if (!$product) {
+                return ['success' => false, 'message' => 'Sản phẩm không tồn tại', 'product' => null];
+            }
+
+            // Xóa ảnh trong storage
+            foreach ($product->items as $item) {
+                if ($item->image && Storage::disk('public')->exists(str_replace('storage/', '', $item->image))) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $item->image));
+                }
+            }
+
+            // Gọi repository xóa sản phẩm
+            $deletedProduct = $this->productRepository->delete($id);
+
+            DB::commit();
+
+            return [
+                'success' => true,
+                'message' => 'Xóa sản phẩm thành công',
+                'product' => $deletedProduct,
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            return [
+                'success' => false,
+                'message' => 'Lỗi khi xóa sản phẩm: ' . $e->getMessage(),
+                'product' => null,
+            ];
+        }
     }
 
     public function getAllProductsWithItems()
@@ -105,42 +144,8 @@ class ProductService
     //     return $this->productRepository->getAllProduct();
     // }
 
-    public function getById($id)
-    {
-        return $this->productRepository->getById($id);
-    }
-
-    // public function updateCategory($data, $id)
+    // public function getById($id)
     // {
-    //     DB::beginTransaction();
-    //     try {
-    //         $product = $this->productRepository->update($data, $id);
-    //     } catch (Exception $e) {
-    //         DB::rollBack();
-    //         Log::info($e->getMessage());
-
-    //         throw new InvalidArgumentException("Failed to update product.");
-    //     }
-
-    //    DB::commit();
-
-    //     return $product;
-    // }
-
-    // public function deleteById($id){
-    //     DB::beginTransaction();
-
-    //     try{
-    //         $product = $this->productRepository->delete($id);
-    //     }catch(Exception $e){
-    //         DB::rollBack();
-    //         Log::info($e->getMessage());
-
-    //         throw new InvalidArgumentException("Unable to delete product data.");
-    //     }
-
-    //     DB::commit();
-
-    //     return $product;
+    //     return $this->productRepository->getById($id);
     // }
 }

@@ -182,4 +182,22 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+    public function destroy($id)
+    {
+        $result = $this->productService->deleteProduct($id);
+
+        if ($result['success']) {
+            return response()->json([
+                'success' => true,
+                'message' => $result['message'],
+                'product' => $result['product'],
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'error' => $result['message'],
+        ], 404);
+    }
 }
