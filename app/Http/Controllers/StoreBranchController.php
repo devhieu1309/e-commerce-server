@@ -53,8 +53,6 @@ class StoreBranchController extends Controller
                 'error' => 'Lỗi khi lấy danh sách chi nhánh: ' . $e->getMessage()
             ], 500);
         }
-        // $storeBranches = StoreBranch::all();
-        // return response()->json($storeBranches);
     }
 
     /**
@@ -64,17 +62,49 @@ class StoreBranchController extends Controller
     {
         // Lấy dữ liệu cần thiết từ request
         $data = $request->validated();
+        // try {
+        //     $storeBranch = $this->storeBranchService->saveStoreBranchData($data);
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Thêm chi nhánh thành công.',
+        //         'data' => $storeBranch
+        //     ], 200);
+        // } catch (Exception $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => $e->getMessage(),
+        //     ], 500);
+        // }
+
         try {
             $storeBranch = $this->storeBranchService->saveStoreBranchData($data);
+
+            $storeBranch->load(['address.ward', 'address.province']);
+
+            $storeBranch = [
+                'store_branch_id' => $storeBranch->store_branch_id,
+                'name' => $storeBranch->name,
+                'phone_number' => $storeBranch->phone_number,
+                'email' => $storeBranch->email,
+                'opening_hours' => $storeBranch->opening_hours,
+                'map_link' => $storeBranch->map_link,
+                'created_at' => $storeBranch->created_at,
+                'updated_at' => $storeBranch->updated_at,
+                'address' => [
+                    'address_id' => $storeBranch->address->address_id,
+                    'detailed_address' => $storeBranch->address->detailed_address,
+                    'ward' => $storeBranch->address->ward->name,
+                    'province' => $storeBranch->address->province->full_name,
+                ]
+            ];
+
             return response()->json([
-                'success' => true,
-                'message' => 'Thêm chi nhánh thành công.',
-                'data' => $storeBranch
-            ], 200);
-        } catch (Exception $e) {
+                'message' => 'Thêm chi nhánh thành công',
+                'store_branch' => $storeBranch,
+            ], 201);
+        } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
+                'error' => 'Lỗi khi thêm chi nhánh: ' . $e->getMessage(),
             ], 500);
         }
     }

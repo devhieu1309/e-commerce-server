@@ -11,7 +11,7 @@ class AddressRepository
      * @var Address
      */
     protected $address;
-    
+
 
     public function __construct(Address $address)
     {
@@ -22,9 +22,9 @@ class AddressRepository
     {
         $address = new $this->address;
 
-        $address->name = $data['detailed_address'];
-        $address->phone_number = $data['provinces_id'];
-        $address->email = $data['wards_id'];
+        $address->detailed_address = $data['detailed_address'];
+        $address->provinces_id = $data['provinces_id'];
+        $address->wards_id = $data['wards_id'];
 
         $address->save();
         return $address->fresh(); //Trả về bản ghi mới nhất sau khi lưu

@@ -33,6 +33,22 @@ class StoreBranchService
         // // tạo chi nhánh với địa chỉ vừa tạo
         // $result = $this->storeBranchRepository->save($data, $address->address_id);
         // return $result->load('address.province', 'address.ward');
+
+        // Nếu chưa có address_id mà có thông tin address => tạo mới địa chỉ
+        if (empty($data['address_id']) && !empty($data['address'])) {
+            $addressData = $data['address'];
+            $address = $this->addressRepository->save($addressData);
+            $data['address_id'] = $address->address_id;
+        }
+        DB::beginTransaction();
+        try {
+            $storeBranch = $this->storeBranchRepository->save($data);
+            DB::commit();
+            return $storeBranch;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new Exception('Lỗi khi lưu chi nhánh: ' . $e->getMessage());
+        }
     }
 
     public function getAll()
@@ -50,6 +66,7 @@ class StoreBranchService
                 'opening_hours' => $storeBranch->opening_hours,
                 'map_link' => $storeBranch->map_link,
                 'address' => [
+                    'address_id' => $storeBranch->address->address_id,
                     'detailed_address' => $storeBranch->address->detailed_address ?? null,
                     'ward' => $storeBranch->address->ward->name ?? null,
                     'province' => $storeBranch->address->province->full_name ?? null,
