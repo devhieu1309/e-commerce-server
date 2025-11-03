@@ -26,6 +26,40 @@ class ProductService
         $this->productConfiguarationRepository = $productConfiguarationRepository;
     }
 
+    public function getProductDetail($productId)
+    {
+        // Lấy sản phẩm cùng với quan hệ liên quan
+        $product = $this->productRepository->getProductWithRelations($productId);
+
+        if (!$product) {
+            return null;
+        }
+
+        // Format lại dữ liệu trả về
+        $data = [
+            'product_id' => $product->product_id,
+            'product_name' => $product->product_name,
+            'description' => $product->description,
+            'category' => $product->category->category_name ?? null,
+            'created_at' => $product->created_at,
+            'updated_at' => $product->updated_at,
+            'items' => $product->items->map(function ($item) {
+                $variationLabels = $item->variationOptions->pluck('value')->toArray();
+
+                return [
+                    'product_item_id' => $item->product_item_id,
+                    'variant_name' => implode(' – ', $variationLabels), // ví dụ "Đen – 128GB"
+                    'sku' => $item->SKU,
+                    'price' => number_format($item->price, 0, ',', '.') . ' đ',
+                    'qty_in_stock' => $item->qty_in_stock,
+                    'image' => $item->image ? asset($item->image) : null,
+                ];
+            }),
+        ];
+
+        return $data;
+    }
+
     public function getAllProductsWithItems()
     {
         $products = $this->productRepository->getAllWithItems();

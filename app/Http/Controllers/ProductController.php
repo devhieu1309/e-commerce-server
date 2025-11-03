@@ -162,4 +162,24 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+    public function show($id)
+    {
+        try {
+            $product = $this->productService->getProductDetail($id);
+
+            if (!$product) {
+                return response()->json(['error' => 'Không tìm thấy sản phẩm'], 404);
+            }
+
+            return response()->json([
+                'message' => 'Lấy chi tiết sản phẩm thành công',
+                'product' => $product
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Lỗi khi lấy chi tiết sản phẩm: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
