@@ -44,6 +44,15 @@ class ProductRepository
         return $this->product->where("product_id", $id)->get();
     }
 
+    public function getProductWithRelations($id)
+    {
+        return $this->product->with([
+            'category',
+            'items.variationOptions.variation'
+        ])->find($id);
+    }
+
+
     public function update($data, $id)
     {
 
