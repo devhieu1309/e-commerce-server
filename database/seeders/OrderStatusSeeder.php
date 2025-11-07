@@ -18,16 +18,28 @@ class OrderStatusSeeder extends Seeder
     {
         $orderStatues = [
             [
-                'status' => 'Thanh Toán MOMO',
+                'status' => 'Chờ xác nhận',
             ],
             [
-                'status' => 'Thanh Toán VN Pay',
+                'status' => 'Đã xác nhận',
             ],
             [
-                'status' => 'Thanh Toán Tiền Mặt',
+                'status' => 'Chờ lấy hàng',
+            ],
+            [
+                'status' => 'Chờ giao hàng',
+            ],
+            [
+                'status' => 'Đã giao',
+            ],
+            [
+                'status' => 'Trả hàng',
+            ],
+            [
+                'status' => 'Hủy đơn',
             ],
 
-
+            
         ];
 
         foreach ($orderStatues as $orderStatus) {
