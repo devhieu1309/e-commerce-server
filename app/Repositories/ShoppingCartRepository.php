@@ -8,7 +8,6 @@ class ShoppingCartRepository
 {
     public function getCartByUserId($userId)
     {
-        // Eager-load product inside productItem so callers can access product data without extra queries
         return ShoppingCart::with('items.productItem.product')->where('user_id', $userId)->first();
     }
 
@@ -32,7 +31,7 @@ class ShoppingCartRepository
         return ShoppingCartItem::create([
             'shopping_cart_id' => $cartId,
             'product_item_id' => $productItemId,
-            'quantity' => $quantity
+            'quantity' => $quantity   
         ]);
     }
 

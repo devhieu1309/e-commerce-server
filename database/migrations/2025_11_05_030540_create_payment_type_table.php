@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shipping_method', function (Blueprint $table) {
-            $table->bigIncrements('shipping_method_id');
-            $table->string('shipping_method_name', 100); 
-            $table->decimal('shipping_method_price', 10,2); 
+        Schema::create('payment_type', function (Blueprint $table) {
+            $table->id('payment_type_id');
+            $table->string('value');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shipping_method');
+        Schema::dropIfExists('payment_type');
     }
 };

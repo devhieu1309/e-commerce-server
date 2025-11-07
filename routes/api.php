@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\ShoppingOrderController;
 use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
@@ -51,6 +53,9 @@ Route::put('/video-reviews/{id}', [VideoReviewController::class, 'update']);
 Route::patch('/video-reviews/{id}', [VideoReviewController::class, 'update']);
 Route::delete('/video-reviews/{id}', [VideoReviewController::class, 'destroy']);
 Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggleVisibility']);
+
+Route::apiResource('payment-type', PaymentTypeController::class);
+Route::apiResource('shopping-order', ShoppingOrderController::class);
 
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);

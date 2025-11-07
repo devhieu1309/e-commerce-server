@@ -28,4 +28,14 @@ class ProductItemService
 
         return $result;
     }
+
+    public function findById($id)
+    {
+        return $this->productItemRepository->find($id);
+    }
+
+    public function updateProductItemData($productItem, $data)
+    {
+        return $this->productItemRepository->update($productItem, $data);
+    }
 }

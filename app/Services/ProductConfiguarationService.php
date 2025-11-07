@@ -26,4 +26,9 @@ class ProductConfiguarationService
 
         return $result;
     }
+
+    public function deleteByProductItem($productItemId)
+    {
+        return $this->productConfiguarationRepository->deleteByProductItem($productItemId);
+    }
 }
