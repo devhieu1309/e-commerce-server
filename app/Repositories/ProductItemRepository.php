@@ -13,6 +13,18 @@ class ProductItemRepository
         $this->productItem = $productItem;
     }
 
+    public function find($id)
+    {
+        return ProductItem::find($id);
+    }
+
+    public function update($productItem, $data)
+    {
+        $productItem->update($data);
+        return $productItem;
+    }
+
+
     public function save($data)
     {
         $productItem = new $this->productItem;
@@ -36,19 +48,6 @@ class ProductItemRepository
     public function getById($id)
     {
         return $this->productItem->where("productItem_id", $id)->get();
-    }
-
-    public function update($data, $id)
-    {
-
-        $productItem = $this->productItem->find($id);
-
-        $productItem->productItem_name = $data['productItem_name'];
-        $productItem->category_id = $data['category_id'];
-
-        $productItem->update();
-
-        return $productItem;
     }
 
     public function delete($id)

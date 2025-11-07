@@ -27,6 +27,80 @@ class ProductService
         $this->productConfiguarationRepository = $productConfiguarationRepository;
     }
 
+    // public function getProductDetail($productId)
+    // {
+    //     // Lấy sản phẩm cùng với quan hệ liên quan
+    //     $product = $this->productRepository->find($productId);
+
+    //     if (!$product) {
+    //         return null;
+    //     }
+
+    //     // Format lại dữ liệu trả về
+    //     $data = [
+    //         'product_id' => $product->product_id,
+    //         'product_name' => $product->product_name,
+    //         'description' => $product->description,
+    //         'category_id' => $product->category?->category_id,
+    //         'category_name' => $product->category?->category_name,
+    //         'created_at' => $product->created_at,
+    //         'updated_at' => $product->updated_at,
+    //         'items' => $product->items->map(function ($item) {
+    //             $variationLabels = $item->variationOptions->pluck('value')->toArray();
+
+    //             return [
+    //                 'product_item_id' => $item->product_item_id,
+    //                 'variant_name' => implode(' - ', $variationLabels), // ví dụ "Đen - 128GB"
+    //                 'sku' => $item->SKU,
+    //                 'price' => number_format($item->price, 0, ',', '.') . ' đ',
+    //                 'qty_in_stock' => $item->qty_in_stock,
+    //                 'image' => $item->image ? asset($item->image) : null,
+    //             ];
+    //         }),
+    //     ];
+
+    //     return $data;
+    // }
+
+    // public function getProductDetail($id)
+    // {
+    //     $product = $this->productRepository->findByIdWithRelations($id, [
+    //         'category',
+    //         'items.variationOptions'
+    //     ]);
+
+    //     if (!$product) {
+    //         return null;
+    //     }
+
+    //     return [
+    //         'product_id' => $product->product_id,
+    //         'product_name' => $product->product_name,
+    //         'description' => $product->description,
+    //         'category_id' => $product->category?->category_id,
+    //         'category_name' => $product->category?->category_name,
+    //         'created_at' => $product->created_at,
+    //         'updated_at' => $product->updated_at,
+    //         'items' => $product->items->map(function ($item) {
+    //             return [
+    //                 'product_item_id' => $item->product_item_id,
+    //                 'sku' => $item->SKU,
+    //                 'qty_in_stock' => $item->qty_in_stock,
+    //                 'price' => $item->price,
+    //                 'image' => $item->image ? asset($item->image) : null,
+    //                 'variation_options' => $item->variationOptions->map(function ($option) {
+    //                     return [
+    //                         'variation_option_id' => $option->variation_option_id,
+    //                         'variation_option_name' => $option->value,
+    //                         'variation_id' => $option->variation_id,
+    //                     ];
+    //                 }),
+    //             ];
+    //         })
+    //     ];
+    // }
+
+
     public function getProductDetail($productId)
     {
         // Lấy sản phẩm cùng với quan hệ liên quan
@@ -41,15 +115,19 @@ class ProductService
             'product_id' => $product->product_id,
             'product_name' => $product->product_name,
             'description' => $product->description,
-            'category' => $product->category->category_name ?? null,
+            'category_id' => $product->category?->category_id,
+            'category_name' => $product->category?->category_name,
             'created_at' => $product->created_at,
             'updated_at' => $product->updated_at,
             'items' => $product->items->map(function ($item) {
+                // Lấy danh sách ID và label của các option
+                $variationIds = $item->variationOptions->pluck('variation_option_id')->toArray();
                 $variationLabels = $item->variationOptions->pluck('value')->toArray();
 
                 return [
                     'product_item_id' => $item->product_item_id,
-                    'variant_name' => implode(' – ', $variationLabels), // ví dụ "Đen – 128GB"
+                    'variation_options' => $variationIds,    // ví dụ [1, 3]
+                    'variant_name' => $variationLabels,      // ví dụ ["Đen", "128GB"]
                     'sku' => $item->SKU,
                     'price' => number_format($item->price, 0, ',', '.') . ' đ',
                     'qty_in_stock' => $item->qty_in_stock,
@@ -138,6 +216,17 @@ class ProductService
 
         return $result;
     }
+
+    public function findById($id)
+    {
+        return $this->productRepository->find($id);
+    }
+
+    public function updateProductData($product, $data)
+    {
+        return $this->productRepository->update($product, $data);
+    }
+
 
     // public function getAll()
     // {

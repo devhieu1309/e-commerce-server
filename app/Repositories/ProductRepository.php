@@ -36,6 +36,18 @@ class ProductRepository
         return Product::with(['items.variationOptions'])->find($id);
     }
 
+    //     public function find($id)
+    // {
+    //     return Product::find($id);
+    // }
+
+    public function update($product, $data)
+    {
+        $product->update($data);
+        return $product;
+    }
+
+
     public function delete($id)
     {
         $product = Product::with('items.variationOptions')->find($id);
@@ -53,6 +65,6 @@ class ProductRepository
         // Xóa sản phẩm chính
         $product->delete();
 
-        return $product; 
+        return $product;
     }
 }
