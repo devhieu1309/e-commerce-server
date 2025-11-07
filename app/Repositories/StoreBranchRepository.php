@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\StoreBranch;
+use DB;
+use Exception;
 
 class StoreBranchRepository
 {
@@ -55,6 +57,11 @@ class StoreBranchRepository
             ->get();
     }
 
+    public function find($id)
+    {
+        return $this->storeBranch->with('address')->find($id);
+    }
+
     public function update($data, $id)
     {
 
@@ -84,10 +91,28 @@ class StoreBranchRepository
         return $storeBranch;
     }
 
+    // public function delete($id)
+    // {
+    //     $storeBranch = $this->storeBranch->find($id);
+    //     $storeBranch->delete();
+    //     return $storeBranch;
+    // }
+
     public function delete($id)
     {
-        $storeBranch = $this->storeBranch->find($id);
+         $storeBranch = $this->storeBranch->with('address')->find($id);
+
+        if (!$storeBranch) {
+            return false;
+        }
+
+        // Nếu có địa chỉ thì xóa luôn
+        if ($storeBranch->address) {
+            $storeBranch->address->delete();
+        }
+
         $storeBranch->delete();
+
         return $storeBranch;
     }
 }

@@ -157,19 +157,18 @@ class StoreBranchController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $storeBranch = $this->storeBranchService->deleteById($id);
 
+        $storeBranch = $this->storeBranchService->deleteStoreBranch($id);
+        if ($storeBranch['success']) {
             return response()->json([
                 'success' => true,
-                'message' => 'Xóa chi nhánh thành công.',
-                'storeBranch' => $storeBranch
+                'message' => $storeBranch['message'],
+                'storeBranch' => $storeBranch['storeBranch'],
             ], 200);
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
         }
+        return response()->json([
+            'success' => false,
+            'error' => $storeBranch['message'],
+        ], 404);
     }
 }

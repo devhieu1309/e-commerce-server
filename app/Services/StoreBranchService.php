@@ -98,20 +98,57 @@ class StoreBranchService
     }
 
 
-    public function deleteById($id)
+    // public function deleteById($id)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $storeBranch = $this->storeBranchRepository->delete($id);
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         Log::info($e->getMessage());
+
+    //         throw new InvalidArgumentException("Failed to delete store branch.");
+    //     }
+
+    //     DB::commit();
+
+    //     return $storeBranch;
+    // }
+    public function deleteStoreBranch($id)
     {
         DB::beginTransaction();
+
         try {
-            $storeBranch = $this->storeBranchRepository->delete($id);
+            // Tìm chi nhánh
+            $storeBranch = $this->storeBranchRepository->find($id);
+
+            if (!$storeBranch) {
+                return [
+                    'success' => false,
+                    'message' => 'Chi nhánh không tồn tại',
+                    'storeBranch'  => null,
+                ];
+            }
+
+            // Gọi repository để xóa chi nhánh và địa chỉ liên quan
+            $deletedBranch = $this->storeBranchRepository->delete($id);
+
+            DB::commit();
+
+            return [
+                'success' => true,
+                'message' => 'Xóa chi nhánh thành công',
+                'storeBranch'  => $deletedBranch,
+            ];
         } catch (Exception $e) {
             DB::rollBack();
-            Log::info($e->getMessage());
+            Log::error('Lỗi khi xóa chi nhánh: ' . $e->getMessage());
 
-            throw new InvalidArgumentException("Failed to delete store branch.");
+            return [
+                'success' => false,
+                'message' => 'Lỗi khi xóa chi nhánh: ' . $e->getMessage(),
+                'storeBranch'  => null,
+            ];
         }
-
-        DB::commit();
-
-        return $storeBranch;
     }
 }
