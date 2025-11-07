@@ -16,7 +16,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\StoreBranchController;
+use App\Http\Controllers\WardController;
 use App\Http\Controllers\WarrantyController;
 
 Route::get('/user', function (Request $request) {
@@ -104,3 +106,7 @@ Route::get('/warranty', [WarrantyController::class, 'index']);
 //Bình luận tin tức
 Route::get('comments', [CommentsController::class, 'index']);
 Route::post('comments', [CommentsController::class, 'store']);
+
+// lấy danh sách tỉnh thành và phường/xã theo tình thành
+Route::get('/provinces', [ProvinceController::class, 'index']);
+Route::get('/wards/by-province/{provinceId}', [WardController::class, 'getByProvince']);

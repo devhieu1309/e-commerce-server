@@ -12,21 +12,18 @@ class Province extends Model
     protected $primaryKey = 'provinces_id';
     protected $fillable = [
         'name',
-        'full_name',
-        'administrative_unit_id',
-        'created_at',
-        'updated_at'
+        'full_name'
     ];
 
     // Một tỉnh/thành có nhiều phường/xã
     public function wards()
     {
-        return $this->hasMany(Ward::class);
+        return $this->hasMany(Ward::class, 'provinces_id', 'provinces_id');
     }
 
     // Một tỉnh/thành có nhiều địa chỉ
     public function Addresses()
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(Address::class, 'provinces_id', 'provinces_id');
     }
 }

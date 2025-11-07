@@ -46,7 +46,7 @@ class StoreBranchController extends Controller
             $storeBranches = $this->storeBranchService->getAll();
             return response()->json([
                 'message' => 'Lấy danh sách chi nhánh thành công',
-                'data' => $storeBranches
+                'storeBranches' => $storeBranches
             ], 200);
         } catch (Exception $e) {
             return response()->json([
