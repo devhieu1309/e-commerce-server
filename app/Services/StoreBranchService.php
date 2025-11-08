@@ -78,6 +78,7 @@ class StoreBranchService
     public function getById($id)
     {
         return $this->storeBranchRepository->getById($id);
+        
     }
 
     public function updateStoreBranch($data, $id)
@@ -85,11 +86,12 @@ class StoreBranchService
         DB::beginTransaction();
         try {
             $storeBranch = $this->storeBranchRepository->update($data, $id);
+            if (!$storeBranch) {
+                throw new Exception('Không tìm thấy chi nhánh cần cập nhật.');
+            }
         } catch (Exception $e) {
             DB::rollBack();
-            Log::info($e->getMessage());
-
-            throw new InvalidArgumentException("Failed to update store branch.");
+            throw new Exception('Lỗi khi sửa chi nhánh: ' . $e->getMessage());
         }
 
         DB::commit();

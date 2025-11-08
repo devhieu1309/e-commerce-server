@@ -35,7 +35,11 @@ class UpdateStoreBranchRequest extends FormRequest
             'max:80',
             Rule::unique('store_branches', 'email')->ignore($this->route('store_branch'), 'store_branch_id'),],
             'opening_hours' => 'required|string|max:50',
-            'address_id' => 'required|exists:addresses,address_id',
+            'address.address_id' => 'nullable|exists:addresses,address_id',
+            'address' => 'nullable|array',
+            'address.detailed_address' => 'nullable|string|max:255',
+            'address.wards_id' => 'nullable|exists:wards,wards_id',
+            'address.provinces_id' => 'nullable|exists:provinces,provinces_id',
             'map_link' => 'required|url|max:200',
         ];
     }
@@ -63,6 +67,18 @@ class UpdateStoreBranchRequest extends FormRequest
 
             'address_id.required' => 'Địa chỉ chi nhánh không được để trống.',
             'address_id.exists' => 'Địa chỉ chi nhánh không tồn tại trong hệ thống.',
+
+            'address.required' => 'Vui lòng cung cấp thông tin địa chỉ.',
+            'address.array' => 'Dữ liệu địa chỉ không hợp lệ.',
+
+            'address.detailed_address.required' => 'Vui lòng nhập địa chỉ chi tiết.',
+            'address.detailed_address.max' => 'Địa chỉ chi tiết không được vượt quá 255 ký tự.',
+
+            'address.wards_id.required' => 'Vui lòng chọn phường/xã.',
+            'address.wards_id.exists' => 'Phường/xã không tồn tại trong hệ thống.',
+
+            'address.provinces_id.required' => 'Vui lòng chọn tỉnh/thành phố.',
+            'address.provinces_id.exists' => 'Tỉnh/thành phố không tồn tại trong hệ thống.',
 
             'map_link.required' => 'Đường dẫn bản đồ không được để trống.',
             'map_link.url' => 'Đường dẫn bản đồ phải là một URL hợp lệ.',

@@ -52,9 +52,7 @@ class StoreBranchRepository
 
     public function getById($id)
     {
-        return $this->storeBranch->with('address.province', 'address.ward')
-            ->where('store_branch_id', $id)
-            ->get();
+        return $this->storeBranch->with('address.ward', 'address.province')->find($id);
     }
 
     public function find($id)
@@ -65,7 +63,7 @@ class StoreBranchRepository
     public function update($data, $id)
     {
 
-        // $storeBranch = $this->storeBranch->with('address')->findOrFail($id);
+        // $storeBranch = $this->storeBranch->find($id);
 
         // $storeBranch->name = $data['name'];
         // $storeBranch->phone_number = $data['phone_number'];
@@ -75,20 +73,32 @@ class StoreBranchRepository
         // $storeBranch->map_link = $data['map_link'];
 
         // $storeBranch->update();
-        // return $storeBranch;
 
+        // return $storeBranch;
         $storeBranch = $this->storeBranch->find($id);
+        if (!$storeBranch) return null;
+
+        // Cập nhật địa chỉ nếu có
+        if (isset($data['address'])) {
+            $addressData = $data['address'];
+            $address = $storeBranch->address;
+            if ($address) {
+                $address->update([
+                    'detailed_address' => $addressData['detailed_address'] ?? $address->detailed_address,
+                    'wards_id' => $addressData['wards_id'] ?? $address->wards_id,
+                    'provinces_id' => $addressData['provinces_id'] ?? $address->provinces_id,
+                ]);
+            }
+        }
 
         $storeBranch->name = $data['name'];
         $storeBranch->phone_number = $data['phone_number'];
         $storeBranch->email = $data['email'];
         $storeBranch->opening_hours = $data['opening_hours'];
-        $storeBranch->address_id = $data['address_id'];
         $storeBranch->map_link = $data['map_link'];
-
         $storeBranch->update();
 
-        return $storeBranch;
+        return $storeBranch->load('address.ward', 'address.province');
     }
 
     // public function delete($id)
@@ -100,7 +110,7 @@ class StoreBranchRepository
 
     public function delete($id)
     {
-         $storeBranch = $this->storeBranch->with('address')->find($id);
+        $storeBranch = $this->storeBranch->with('address')->find($id);
 
         if (!$storeBranch) {
             return false;

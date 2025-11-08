@@ -101,7 +101,7 @@ class StoreBranchController extends Controller
             return response()->json([
                 'message' => 'Thêm chi nhánh thành công',
                 'store_branch' => $storeBranch,
-            ], 201);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Lỗi khi thêm chi nhánh: ' . $e->getMessage(),
@@ -139,10 +139,27 @@ class StoreBranchController extends Controller
         try {
             $storeBranch = $this->storeBranchService->updateStoreBranch($data, $id);
 
+            $storeBranch = [
+                'store_branch_id' => $storeBranch->store_branch_id,
+                'name' => $storeBranch->name,
+                'phone_number' => $storeBranch->phone_number,
+                'email' => $storeBranch->email,
+                'opening_hours' => $storeBranch->opening_hours,
+                'map_link' => $storeBranch->map_link,
+                'created_at' => $storeBranch->created_at,
+                'updated_at' => $storeBranch->updated_at,
+                'address' => [
+                    'address_id' => $storeBranch->address->address_id,
+                    'detailed_address' => $storeBranch->address->detailed_address,
+                    'ward' => $storeBranch->address->ward->name,
+                    'province' => $storeBranch->address->province->full_name,
+                ]
+            ];
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cập nhật chi nhánh thành công.',
-                'data' => $storeBranch
+                'storeBranch' => $storeBranch
             ], 200);
         } catch (Exception $e) {
             return response()->json([
