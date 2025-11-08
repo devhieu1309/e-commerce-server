@@ -26,12 +26,13 @@ class FacebookSocialiteController extends Controller
             // Sử dụng stateless() vì API không dùng session
             $facebookUser = Socialite::driver('facebook')->stateless()->user();
 
+            // dd($facebookUser->getId());
             // Tìm user trong database
             $user = User::where('social_id', $facebookUser->getId())
                 ->where('social_type', 'facebook')
                 ->first();
 
-            dd("MINH HIEU");
+            // dd($user);
 
             if (!$user) {
                 // Nếu chưa có user, tạo mới
@@ -42,6 +43,7 @@ class FacebookSocialiteController extends Controller
                     'social_type' => 'facebook',
                     'password' => bcrypt(Str::random(16)), // random password
                 ]);
+                // dd($user);
             }
 
             // Nếu bạn dùng Sanctum hoặc Passport để xác thực API:
@@ -61,7 +63,8 @@ class FacebookSocialiteController extends Controller
             //     'message' => 'Facebook login failed',
             //     'error' => $e->getMessage(),
             // ], 500);
-            return redirect()->away(env('FRONTEND_URL') . '/login?error=facebook_auth_failed');
+            dd($e->getMessage());
+            // return redirect()->away(env('FRONTEND_URL') . '/login?error=facebook_auth_failed');
         }
     }
 }
