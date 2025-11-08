@@ -26,10 +26,11 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(ShippingMethodSeeder::class);
         $this->call(OrderStatusSeeder::class);
+        $this->call(PaymentTypeSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(NewsSeeder::class);
         $this->call(BannerSeeder::class);
-        $this->call(OrderStatusSeeder::class);
+        // $this->call(OrderStatusSeeder::class);
         $this->call(NewsBlocksSeeder::class);
         $this->call(VariationSeeder::class);
         $this->call(ProductSeeder::class);
@@ -49,5 +50,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ShoppingCartSeeder::class);
         $this->call(CommentsSeeder::class);
+
+        $this->call(ShoppingOrderSeeder::class);
+        $this->call(OrderLineSeeder::class);
+        
     }
 }
