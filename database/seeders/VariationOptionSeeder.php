@@ -11,10 +11,11 @@ class VariationOptionSeeder extends Seeder
     {
         $options = [
             // Cho điện thoại
-            ['variation_id' => 1, 'value' => 'Đen'],
-            ['variation_id' => 1, 'value' => 'Trắng'],
-            ['variation_id' => 1, 'value' => 'Xanh dương'],
+            ['variation_id' => 1, 'value' => 'Vàng'],
             ['variation_id' => 1, 'value' => 'Hồng'],
+            ['variation_id' => 1, 'value' => 'Trắng'],
+            // ['variation_id' => 1, 'value' => 'Xanh'],
+            // ['variation_id' => 1, 'value' => 'Đen'],
 
             ['variation_id' => 2, 'value' => '128GB'],
             ['variation_id' => 2, 'value' => '256GB'],
