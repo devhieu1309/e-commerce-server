@@ -18,6 +18,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WarrantyController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\LocationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -104,3 +106,12 @@ Route::get('/warranty', [WarrantyController::class, 'index']);
 //Bình luận tin tức
 Route::get('comments', [CommentsController::class, 'index']);
 Route::post('comments', [CommentsController::class, 'store']);
+
+//Địa chỉ khách hàng 
+Route::apiResource('addresses',AddressController::class);
+Route::patch('addresses/{id}/default', [AddressController::class, 'setDefault']);
+Route::get('/countries', [LocationController::class, 'countries']);
+Route::get('/provinces', [LocationController::class, 'provinces']);
+Route::get('/districts/{provinceCode}', [LocationController::class, 'districts']);
+Route::get('/wards/{districtCode}', [LocationController::class, 'wards']);
+      

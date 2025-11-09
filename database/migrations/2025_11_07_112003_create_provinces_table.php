@@ -6,22 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('provinces', function (Blueprint $table) {
             $table->bigIncrements('provinces_id');
+            $table->unsignedBigInteger('countries_id')->nullable();
+
+            $table->string('code', 10)->nullable();
             $table->string('name', 100);
-            $table->string('full_name', 255);
+            $table->string('codename', 100)->nullable();
+            $table->string('division_type', 50)->nullable();
+            $table->string('phone_code', 10)->nullable();
+
             $table->timestamps();
+
+            $table->foreign('countries_id')->references('countries_id')->on('countries')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('provinces');

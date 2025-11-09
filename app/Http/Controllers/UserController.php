@@ -55,4 +55,22 @@ class UserController extends Controller
             'data' => $user
         ], 200);
     }
+
+
+    public function show($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy người dùng.',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user,
+        ]);
+    }
 }

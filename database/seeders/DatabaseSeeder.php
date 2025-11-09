@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             // NewsSeeder::class
         ]);
 
+        // ==== Dữ liệu hệ thống ban đầu ====
         $this->call(CategorySeeder::class);
         $this->call(ShippingMethodSeeder::class);
         $this->call(OrderStatusSeeder::class);
@@ -34,19 +35,22 @@ class DatabaseSeeder extends Seeder
         $this->call(VariationSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(VideoReviewSeeder::class);
-
         $this->call(PromotionSeeder::class);
         $this->call(VariationOptionSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(ProductItemSeeder::class);
         $this->call(ProductConfigurationSeeder::class);
+
+        // ==== Dữ liệu hành chính Việt Nam ====
+        $this->call(CountrySeeder::class);
         $this->call(ProvinceSeeder::class);
+        $this->call(DistrictSeeder::class);
         $this->call(WardSeeder::class);
         $this->call(AddressSeeder::class);
+
+        // ==== Dữ liệu cửa hàng, bảo hành, giỏ hàng ====
         $this->call(StoreBranchSeeder::class);
-
         $this->call(WarrantySeeder::class);
-
         $this->call(ShoppingCartSeeder::class);
         $this->call(CommentsSeeder::class);
     }

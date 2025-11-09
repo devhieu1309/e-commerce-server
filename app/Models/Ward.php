@@ -10,24 +10,10 @@ class Ward extends Model
     use HasFactory;
     protected $table = 'wards';
     protected $primaryKey = 'wards_id';
-    protected $fillable = [
-        'name',
-        'full_name',
-        'provinces_id',
-        'administrative_unit_id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $fillable = ['districts_id', 'name', 'full_name'];
 
-    // Một phường thuộc một tỉnh/thành
-    public function province()
+    public function district()
     {
-        return $this->belongsTo(Province::class);
-    }
-
-    // Một phường có nhiều địa chỉ
-    public function addresses()
-    {
-        return $this->hasMany(Address::class);
+        return $this->belongsTo(District::class, 'districts_id', 'districts_id');
     }
 }

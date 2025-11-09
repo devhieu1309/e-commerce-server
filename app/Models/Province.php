@@ -10,23 +10,15 @@ class Province extends Model
     use HasFactory;
     protected $table = 'provinces';
     protected $primaryKey = 'provinces_id';
-    protected $fillable = [
-        'name',
-        'full_name',
-        'administrative_unit_id',
-        'created_at',
-        'updated_at'
-    ];
+    protected $fillable = ['countries_id', 'name', 'full_name'];
 
-    // Một tỉnh/thành có nhiều phường/xã
-    public function wards()
+    public function country()
     {
-        return $this->hasMany(Ward::class);
+        return $this->belongsTo(Country::class, 'countries_id', 'countries_id');
     }
 
-    // Một tỉnh/thành có nhiều địa chỉ
-    public function Addresses()
+    public function districts()
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(District::class, 'provinces_id', 'provinces_id');
     }
 }

@@ -11,22 +11,41 @@ class Address extends Model
     protected $table = 'addresses';
     protected $primaryKey = 'address_id';
     protected $fillable = [
-        'detailed_address',
+        'user_id',
+        'countries_id',
         'provinces_id',
+        'districts_id',
         'wards_id',
-        'created_at',
-        'updated_at'
+        'name',
+        'phone',
+        'company',
+        'detailed_address',
+        'zip',
+        'isDefault'
     ];
 
-    // Địa chỉ thuộc một phường
-    public function ward()
+    public function user()
     {
-        return $this->belongsTo(Ward::class);
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
-    // Một địa chỉ có thể được dùng bởi nhiều chi nhánh
-    public function storeBranches()
+    public function country()
     {
-        return $this->hasMany(StoreBranch::class);
+        return $this->belongsTo(Country::class, 'countries_id', 'countries_id');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'provinces_id', 'provinces_id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'districts_id', 'districts_id');
+    }
+
+    public function ward()
+    {
+        return $this->belongsTo(Ward::class, 'wards_id', 'wards_id');
     }
 }
