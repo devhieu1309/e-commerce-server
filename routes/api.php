@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatBoxAiController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WarrantyController;
@@ -102,5 +103,9 @@ Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySer
 Route::get('/warranty', [WarrantyController::class, 'index']);
 
 //Bình luận tin tức
-Route::get('comments', [CommentsController::class, 'index']);
-Route::post('comments', [CommentsController::class, 'store']);
+Route::get('/comments', [CommentsController::class, 'index']);
+Route::post('/comments', [CommentsController::class, 'store']);
+
+//chatbox ai
+Route::get('/chat', [ChatBoxAiController::class, 'chat']);
+Route::post('/chat', [ChatBoxAiController::class, 'chat']);
