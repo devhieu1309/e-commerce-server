@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatBoxAiController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\StoreBranchController;
@@ -108,10 +109,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySerial']);
 Route::get('/warranty', [WarrantyController::class, 'index']);
 
-//Bình luận tin tức
-Route::get('comments', [CommentsController::class, 'index']);
-Route::post('comments', [CommentsController::class, 'store']);
+
 
 // lấy danh sách tỉnh thành và phường/xã theo tình thành
 Route::get('/provinces', [ProvinceController::class, 'index']);
 Route::get('/wards/by-province/{provinceId}', [WardController::class, 'getByProvince']);
+Route::get('/comments', [CommentsController::class, 'index']);
+Route::post('/comments', [CommentsController::class, 'store']);
+
+//chatbox ai
+Route::get('/chat', [ChatBoxAiController::class, 'chat']);
+Route::post('/chat', [ChatBoxAiController::class, 'chat']);
