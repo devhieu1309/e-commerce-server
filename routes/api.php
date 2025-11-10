@@ -40,7 +40,6 @@ Route::apiResource('variations', VariationController::class);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::apiResource('shipping_methods', ShippingMethodController::class);
-Route::apiResource('users', UserController::class);
 Route::apiResource('cart', ShoppingCartController::class);
 
 
@@ -98,6 +97,11 @@ Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
 //Đăng ký & Đăng Nhập 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+// CRUD user
+Route::apiResource('users', UserController::class);
+// API đổi mật khẩu người dùng
+Route::patch('/users/{id}/change-password', [UserController::class, 'changePassword']);
 
 //Tìm kiếm thông tin bảo hành bằng số serial
 Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySerial']);
