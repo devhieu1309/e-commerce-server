@@ -35,24 +35,31 @@ class WarrantyService
 
     public function getById($id)
     {
-        return $this->warrantyRepository->getById($id);
+        $warranty = $this->warrantyRepository->getById($id)->first();
+
+        if (!$warranty) {
+            throw new InvalidArgumentException("Không tìm thấy thông tin bảo hành.");
+        }
+
+        return $warranty;
     }
 
     public function updateWarranty($data, $id)
     {
         DB::beginTransaction();
         try {
-            $warranty = $this->warrantyRepository->update($data, $id);
+            $warranty = $this->getById($id); // kiểm tra tồn tại
+            $updated = $this->warrantyRepository->update($data, $id);
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());
 
-            throw new InvalidArgumentException("Failed to update warranty.");
+            throw new InvalidArgumentException("Cập nhật bảo hành thất bại.");
         }
 
         DB::commit();
 
-        return $warranty;
+        return $updated;
     }
 
 
@@ -60,17 +67,18 @@ class WarrantyService
     {
         DB::beginTransaction();
         try {
-            $warranty = $this->warrantyRepository->delete($id);
+            $warranty = $this->getById($id); // kiểm tra tồn tại
+            $deleted = $this->warrantyRepository->delete($id);
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());
 
-            throw new InvalidArgumentException("Failed to delete warranty.");
+            throw new InvalidArgumentException("Xóa bảo hành thất bại.");
         }
 
         DB::commit();
 
-        return $warranty;
+        return $deleted;
     }
 
     public function searchBySerial(string $serial)

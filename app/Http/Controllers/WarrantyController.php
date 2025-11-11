@@ -33,8 +33,6 @@ class WarrantyController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
-        $warranty = Warranty::all();
-        return response()->json($warranty);
     }
 
     public function store(StoreWarrantyRequest $request)
@@ -46,7 +44,7 @@ class WarrantyController extends Controller
                 'success' => true,
                 'message' => 'Sản phẩm bản hành được thêm thành công.',
                 'data' => $warranty
-            ], 200);
+            ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,

@@ -37,9 +37,9 @@ class PromotionController extends Controller
                 'message' => $e->getMessage(),
             ], 500);
         }
-        // lay danh sach
-        $promotions = Promotion::all();
-        return response() -> json($promotions);
+        // // lay danh sach
+        // $promotions = Promotion::all();
+        // return response() -> json($promotions);
     }
 
     /**

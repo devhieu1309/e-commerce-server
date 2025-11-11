@@ -27,7 +27,7 @@ class WarrantyRepository
     {
         $warranty = new $this->warranty;
 
-        $warranty->serial_numble = $data['serial_numble'];
+        $warranty->serial_number = $data['serial_number'];
         $warranty->warranty_status = $data['warranty_status'];
         $warranty->warranty_start = $data['warranty_start'];
         $warranty->warranty_expiry = $data['warranty_expiry'] ?? null;
@@ -54,7 +54,7 @@ class WarrantyRepository
     {
         $warranty = $this->warranty->find($id);
 
-        $warranty->serial_numble = $data['serial_number'];
+        $warranty->serial_number = $data['serial_number'];
         $warranty->warranty_status = $data['warranty_status'];
         $warranty->warranty_start = $data['warranty_start'];
         $warranty->warranty_expiry = $data['warranty_expiry'] ?? null;
