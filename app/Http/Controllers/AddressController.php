@@ -5,116 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAddressRequest;
+use App\Http\Requests\UpdateAddressRequest;
+
 
 class AddressController extends Controller
 {
-    /**
-     * Lấy danh sách địa chỉ
-     * - Nếu có user_id -> lấy theo user
-     * - Nếu không -> trả về toàn bộ (dành cho admin)
-     */
-    // public function index(Request $request)
-    // {
-    //     $query = Address::with(['country', 'province', 'district', 'ward']);
-
-    //     if ($request->has('user_id')) {
-    //         $query->where('user_id', $request->user_id);
-    //     }
-
-    //     return response()->json($query->get(), 200);
-    // }
-
-    /**
-     * Thêm địa chỉ mới
-     */
-    // public function store(StoreAddressRequest $request)
-    // {
-    //     $data = $request->validated();
-
-    //     //  Nếu có isDefault được chọn => reset các địa chỉ khác của user về false
-    //     if (!empty($data['isDefault'])) {
-    //         Address::where('user_id', $data['user_id'])->update(['isDefault' => false]);
-    //         $data['isDefault'] = true;
-    //     } else {
-    //         $data['isDefault'] = false;
-    //     }
-
-    //     //  Tạo mới địa chỉ
-    //     $address = Address::create($data);
-
-    //     return response()->json([
-    //         'message' => 'Thêm địa chỉ thành công!',
-    //         'data' => $address->load(['country', 'province', 'district', 'ward'])
-    //     ], 201);
-    // }
-
-
-    /**
-     * Cập nhật địa chỉ
-     */
-    // public function update(StoreAddressRequest $request, $id)
-    // {
-    //     $address = Address::findOrFail($id);
-
-    //     $data = $request->validated();
-
-    //     $address->update($data);
-
-    //     return response()->json([
-    //         'message' => ' Cập nhật địa chỉ thành công!',
-    //         'data' => $address->load(['country', 'province', 'district', 'ward'])
-    //     ]);
-    // }
-
-    /**
-     * Xóa địa chỉ
-     */
-    // public function destroy($id)
-    // {
-    //     $address = Address::findOrFail($id);
-    //     $address->delete();
-
-    //     return response()->json(['message' => ' Đã xóa địa chỉ thành công!']);
-    // }
-    // public function destroy($id)
-    // {
-    //     $address = Address::findOrFail($id);
-
-    //     // Không cho phép xóa địa chỉ mặc định
-    //     if ($address->isDefault) {
-    //         return response()->json([
-    //             'message' => 'Không thể xóa địa chỉ mặc định. Hãy đặt địa chỉ khác làm mặc định trước.'
-    //         ], 422);
-    //     }
-
-    //     $address->delete();
-
-    //     return response()->json(['message' => 'Xóa địa chỉ thành công!']);
-    // }
-
-
-    /**
-     * Đặt địa chỉ mặc định
-     */
-    // public function setDefault($id)
-    // {
-    //     $address = Address::findOrFail($id);
-
-    //     // Bỏ mặc định cũ chỉ của user này
-    //     Address::where('user_id', $address->user_id)
-    //         ->where('isDefault', true)
-    //         ->update(['isDefault' => false]);
-
-    //     // Đặt địa chỉ mới
-    //     $address->update(['isDefault' => true]);
-
-    //     return response()->json([
-    //         'message' => 'Đặt địa chỉ mặc định thành công!',
-    //         'data' => $address
-    //     ]);
-    // }
-
-
     /**
      * Lấy danh sách địa chỉ người dùng
      */
@@ -200,7 +95,7 @@ class AddressController extends Controller
     //         ]
     //     ]);
     // }
-    public function update(StoreAddressRequest $request, $id)
+    public function update(UpdateAddressRequest $request, $id)
     {
         $address = Address::findOrFail($id);
         $data = $request->validated();

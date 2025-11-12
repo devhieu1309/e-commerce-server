@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -96,33 +97,10 @@ class UserController extends Controller
 
 
 
-    public function changePassword(Request $request, $id)
+    public function changePassword(ChangePasswordRequest $request, $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Không tìm thấy người dùng.'
-            ], 404);
-        }
-
-        // Kiểm tra dữ liệu đầu vào
-        $request->validate([
-            'old_password' => 'required',
-            'new_password' => 'required|min:8',
-            'confirm_password' => 'required|same:new_password',
-        ]);
-
-        // Kiểm tra mật khẩu cũ có đúng không
-        if (!Hash::check($request->old_password, $user->password)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mật khẩu cũ không chính xác.'
-            ], 400);
-        }
-
-        // Cập nhật mật khẩu mới
         $user->password = Hash::make($request->new_password);
         $user->save();
 
