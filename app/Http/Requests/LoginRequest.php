@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class LoginRequest extends FormRequest
 {
     /**
-     * Người dùng có được phép gửi request này không?
+     * Cho phép tất cả người dùng gửi request này.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Quy tắc xác thực dữ liệu cho đăng nhập.
+     * Quy tắc validate cho đăng nhập.
      */
     public function rules(): array
     {
@@ -26,7 +26,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Thông báo lỗi tùy chỉnh.
+     * Thông báo lỗi tùy chỉnh (để hiển thị ra FE).
      */
     public function messages(): array
     {
@@ -36,5 +36,19 @@ class LoginRequest extends FormRequest
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.min'      => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ];
+    }
+
+    /**
+     * Tùy chỉnh phản hồi JSON khi validate thất bại.
+     */
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $response = response()->json([
+            'status'  => false,
+            'message' => $validator->errors()->first(), // Lấy lỗi đầu tiên
+            'errors'  => $validator->errors(),
+        ], 422);
+
+        throw new \Illuminate\Validation\ValidationException($validator, $response);
     }
 }

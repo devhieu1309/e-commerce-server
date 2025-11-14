@@ -62,3 +62,6 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 //Đăng ký & Đăng Nhập 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+//Quên mật khẩu
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
