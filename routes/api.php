@@ -120,3 +120,5 @@ Route::post('/comments', [CommentsController::class, 'store']);
 //chatbox ai
 Route::get('/chat', [ChatBoxAiController::class, 'chat']);
 Route::post('/chat', [ChatBoxAiController::class, 'chat']);
+//Quên mật khẩu
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
