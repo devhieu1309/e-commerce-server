@@ -65,4 +65,20 @@ class UserController extends Controller
             'data' => $user
         ]);
     }
+
+
+    public function search(Request $request)
+    {
+        $query = $request->query('query');
+
+        $users = User::where('name', 'LIKE', "%$query%")
+            ->orWhere('email', 'LIKE', "%$query%")
+            ->orWhere('phone', 'LIKE', "%$query%")
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $users
+        ]);
+    }
 }

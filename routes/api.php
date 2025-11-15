@@ -23,4 +23,7 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 // Route::get('/users/{id}', [UserList_Controller::class, 'show']);    
 // Route::patch('/users/{id}', [UserList_Controller::class, 'update']); 
 // Route::delete('/users/{id}', [UserList_Controller::class, 'destroy']); 
+Route::get('/users/search', [UserController::class, 'search']);
 Route::apiResource('users', UserController::class);
+
+
