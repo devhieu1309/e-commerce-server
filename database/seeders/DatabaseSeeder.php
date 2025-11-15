@@ -2,12 +2,17 @@
 
 namespace Database\Seeders;
 
+<<<<<<< HEAD
 use App\Models\News_Blocks;
 use App\Models\Product;
 use App\Models\ProductItem;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\VariationOption;
+=======
+use Illuminate\Database\Seeder;
+use App\Models\User;
+>>>>>>> bui-tham-ky/1-crud-user
 
 class DatabaseSeeder extends Seeder
 {
