@@ -13,22 +13,15 @@ class UpdateUserRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->route('id');
+        // lấy user_id từ route
+        $id = $this->route('user');
 
         return [
-            'name'     => 'sometimes|string|max:255',
-            'email'    => "sometimes|email|max:255|unique:users,email,$id,user_id",
-            'phone'    => 'sometimes|nullable|string|max:20',
-            'role'     => 'sometimes|string|max:50',
-            'password' => 'sometimes|nullable|string|min:6',
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'email.unique' => 'Email này đã được sử dụng.',
-            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255|unique:users,email,' . $id . ',user_id',
+            'phone'    => 'nullable|string|max:20',
+            'role'     => 'nullable|string|max:50',
+            'password' => 'nullable|string|min:6',
         ];
     }
 }

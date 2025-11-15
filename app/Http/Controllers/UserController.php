@@ -52,10 +52,8 @@ class UserController extends Controller
 
         $data = $request->validated();
 
-        // Nếu có password mới thì hash
-        if (isset($data['password']) && $data['password']) {
-            $data['password'] = bcrypt($data['password']);
-        } else {
+        // Nếu password rỗng thì bỏ qua
+        if (empty($data['password'])) {
             unset($data['password']);
         }
 
