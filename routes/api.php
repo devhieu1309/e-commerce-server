@@ -60,6 +60,7 @@ Route::apiResource('shopping-order', ShoppingOrderController::class);
 
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
+Route::get('/users/search', [UserController::class, 'search']);
 Route::apiResource('users', UserController::class);
 // chương trình khuyến mãi
 Route::apiResource('promotions', PromotionController::class);
@@ -122,3 +123,6 @@ Route::get('/chat', [ChatBoxAiController::class, 'chat']);
 Route::post('/chat', [ChatBoxAiController::class, 'chat']);
 //Quên mật khẩu
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+
+
+
