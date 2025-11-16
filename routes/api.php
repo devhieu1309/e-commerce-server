@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WarrantyController;
@@ -109,3 +110,6 @@ Route::get('/warranty', [WarrantyController::class, 'index']);
 //Bình luận tin tức
 Route::get('comments', [CommentsController::class, 'index']);
 Route::post('comments', [CommentsController::class, 'store']);
+
+// Cổng thanht toán
+Route::post('/momo_payment', [CheckoutController::class, 'momo_payment']);
