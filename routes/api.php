@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\ShoppingOrderController;
 use App\Http\Controllers\VideoReviewController;
 use App\Http\Controllers\ShippingMethodController;
 use App\Http\Controllers\OrderStatusController;
@@ -14,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ChatBoxAiController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\StoreBranchController;
+use App\Http\Controllers\WardController;
+use App\Http\Controllers\WarrantyController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -35,6 +45,8 @@ Route::apiResource('variations', VariationController::class);
 Route::get('/products', [ProductController::class, 'index']);
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('users', UserController::class);
+Route::apiResource('cart', ShoppingCartController::class);
+
 
 // Video Review Routes
 Route::get('/video-reviews', [VideoReviewController::class, 'index']);
@@ -44,18 +56,24 @@ Route::patch('/video-reviews/{id}', [VideoReviewController::class, 'update']);
 Route::delete('/video-reviews/{id}', [VideoReviewController::class, 'destroy']);
 Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggleVisibility']);
 
+Route::apiResource('payment-type', PaymentTypeController::class);
+Route::apiResource('shopping-order', ShoppingOrderController::class);
+
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
+Route::get('/users/search', [UserController::class, 'search']);
 Route::apiResource('users', UserController::class);
 // chương trình khuyến mãi
 Route::apiResource('promotions', PromotionController::class);
+
+// chi nhánh cửa hàng
+Route::apiResource('store_branches', StoreBranchController::class);
 //phương thanh toán
-Route::get('/order-status/search', [OrderStatusController::class, 'search']);
-Route::get('/order-status', [OrderStatusController::class, 'index']);
-Route::post('/order-status', [OrderStatusController::class, 'store']);
-Route::patch('/order-status/{id}', [OrderStatusController::class, 'update']);
-Route::get('/order-status/{id}', [OrderStatusController::class, 'show']);
-Route::delete('/order-status/{id}', [OrderStatusController::class, 'destroy']);
+
+Route::get('orderStatus/search', [OrderStatusController::class, 'search']);
+Route::get('orderStatus/{orderstatus}/variations', [OrderStatusController::class, 'getVariationByOrderStatus']);
+Route::apiResource('orderStatus', OrderStatusController::class);
+
 
 
 //Banner
@@ -71,10 +89,10 @@ Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 Route::get('news/search', [NewsController::class, 'search']);
 Route::get('/news', [NewsController::class, 'displayFeaturedNews']);
 Route::get('/news', [NewsController::class, 'index']);
-
 Route::post('/news', [NewsController::class, 'store']);
 Route::patch('/news/{id}', [NewsController::class, 'update']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
+Route::get('/news/{id}/blocks', [NewsController::class, 'showNewsBlocks']);
 Route::delete('/news/{id}', [NewsController::class, 'destroy']);
 
 //bài viết
@@ -88,3 +106,30 @@ Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
 //Đăng ký & Đăng Nhập 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+//Tìm kiếm thông tin bảo hành bằng số serial
+Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySerial']);
+Route::get('/warranty', [WarrantyController::class, 'index']);
+
+//Bình luận tin tức
+Route::get('comments', [CommentsController::class, 'index']);
+Route::post('comments', [CommentsController::class, 'store']);
+
+// Cổng thanht toán
+Route::post('/momo_payment', [CheckoutController::class, 'momo_payment']);
+
+
+// lấy danh sách tỉnh thành và phường/xã theo tình thành
+Route::get('/provinces', [ProvinceController::class, 'index']);
+Route::get('/wards/by-province/{provinceId}', [WardController::class, 'getByProvince']);
+Route::get('/comments', [CommentsController::class, 'index']);
+Route::post('/comments', [CommentsController::class, 'store']);
+
+//chatbox ai
+Route::get('/chat', [ChatBoxAiController::class, 'chat']);
+Route::post('/chat', [ChatBoxAiController::class, 'chat']);
+//Quên mật khẩu
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+
+
+

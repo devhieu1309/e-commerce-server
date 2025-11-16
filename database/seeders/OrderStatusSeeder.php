@@ -18,45 +18,28 @@ class OrderStatusSeeder extends Seeder
     {
         $orderStatues = [
             [
-                'status' => 'Đang chờ xử lý',
+                'status' => 'Chờ xác nhận',
             ],
             [
-                'status' => 'Đang chuẩn bị hàng',
+                'status' => 'Đã xác nhận',
             ],
             [
-                'status' => 'Đã xác nhận đơn hàng',
+                'status' => 'Chờ lấy hàng',
             ],
             [
-                'status' => 'Đang vận chuyển',
+                'status' => 'Chờ giao hàng',
             ],
             [
-                'status' => 'Đang giao hàng',
+                'status' => 'Đã giao',
             ],
             [
-                'status' => 'Đang ở đơn vị vận chuyển',
+                'status' => 'Trả hàng',
             ],
             [
-                'status' => 'Đã giao hàng',
-            ],
-            [
-                'status' => 'Đã hủy đơn hàng',
-            ],
-            [
-                'status' => 'Hoàn trả hàng',
-            ],
-            [
-                'status' => 'Giao hàng không thành công',
-            ],
-            [
-                'status' => 'Đơn hàng bị từ chối',
-            ],
-            [
-                'status' => 'Đã trả hàng thành công',
-            ],
-            [
-                'status' => 'Đơn hàng bị hủy bởi hệ thống',
+                'status' => 'Hủy đơn',
             ],
 
+            
         ];
 
         foreach ($orderStatues as $orderStatus) {

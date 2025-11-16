@@ -10,11 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-          Schema::create('products', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('product_id');
             $table->string('product_name', 100);
             $table->text('description')->nullable(false);
-            $table->string('image')->nullable(false);
+            // $table->string('image')->nullable(false);
             $table->foreignId('category_id')
                 ->constrained('categories', 'category_id')
                 ->onUpdate('cascade')

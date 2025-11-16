@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -45,14 +46,39 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         $user = User::findOrFail($id);
-        $user->update($request->validated());
+
+        $data = $request->validated();
+
+        // Nếu password rỗng thì bỏ qua
+        if (empty($data['password'])) {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
         return response()->json([
             'success' => true,
             'message' => 'Cập nhật người dùng thành công.',
             'data' => $user
-        ], 200);
+        ]);
+    }
+
+
+    public function search(Request $request)
+    {
+        $query = $request->query('query');
+
+        $users = User::where('name', 'LIKE', "%$query%")
+            ->orWhere('email', 'LIKE', "%$query%")
+            ->orWhere('phone', 'LIKE', "%$query%")
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $users
+        ]);
     }
 }

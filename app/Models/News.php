@@ -21,6 +21,6 @@ class News extends Model
 
     public function blocks()
     {
-        return $this->hasMany(News_Blocks::class, 'news_id');
+        return $this->hasMany(NewsBlocks::class, 'news_id', 'id');
     }
 }

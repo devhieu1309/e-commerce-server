@@ -64,6 +64,16 @@ class NewsController extends Controller
 
         return response()->json($news);
     }
+    public function showNewsBlocks($id)
+    {
+
+        $news = News::with('blocks')->findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $news
+        ]);
+    }
 
     public function destroy($id)
     {

@@ -2,9 +2,17 @@
 
 namespace Database\Seeders;
 
+<<<<<<< HEAD
 use App\Models\News_Blocks;
+use App\Models\Product;
+use App\Models\ProductItem;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\VariationOption;
+=======
+use Illuminate\Database\Seeder;
+use App\Models\User;
+>>>>>>> bui-tham-ky/1-crud-user
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,30 +21,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            // CategorySeeder::class,
-            // ProductSeeder::class,
-            // VideoReviewSeeder::class,
-            // NewsSeeder::class
-        ]);
-
         $this->call(CategorySeeder::class);
         $this->call(ShippingMethodSeeder::class);
         $this->call(OrderStatusSeeder::class);
+        $this->call(PaymentTypeSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(NewsSeeder::class);
         $this->call(BannerSeeder::class);
-        $this->call(OrderStatusSeeder::class);
+        // $this->call(OrderStatusSeeder::class);
         $this->call(NewsBlocksSeeder::class);
         $this->call(VariationSeeder::class);
+        $this->call(VariationOptionSeeder::class);
+        $this->call(ProductSeeder::class);  // 1
+        $this->call(ProductItemSeeder::class);
+         $this->call(ProductConfigurationSeeder::class);
+        $this->call(VideoReviewSeeder::class);
 
         $this->call(PromotionSeeder::class);
-        // User::factory(10)->create();
+        $this->call(ProvinceSeeder::class);
+        $this->call(WardSeeder::class);
+        $this->call(AddressSeeder::class);
+        $this->call(StoreBranchSeeder::class);
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call(WarrantySeeder::class);
 
+        $this->call(ShoppingCartSeeder::class);
+        $this->call(CommentsSeeder::class);
+
+        $this->call(ShoppingOrderSeeder::class);
+        $this->call(OrderLineSeeder::class);
     }
 }
