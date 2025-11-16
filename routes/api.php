@@ -18,8 +18,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ChatBoxAiController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\StoreBranchController;
+use App\Http\Controllers\WardController;
 use App\Http\Controllers\WarrantyController;
 
 Route::get('/user', function (Request $request) {
@@ -58,6 +61,7 @@ Route::apiResource('shopping-order', ShoppingOrderController::class);
 
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
+Route::get('/users/search', [UserController::class, 'search']);
 Route::apiResource('users', UserController::class);
 // chương trình khuyến mãi
 Route::apiResource('promotions', PromotionController::class);
@@ -113,3 +117,19 @@ Route::post('comments', [CommentsController::class, 'store']);
 
 // Cổng thanht toán
 Route::post('/momo_payment', [CheckoutController::class, 'momo_payment']);
+
+
+// lấy danh sách tỉnh thành và phường/xã theo tình thành
+Route::get('/provinces', [ProvinceController::class, 'index']);
+Route::get('/wards/by-province/{provinceId}', [WardController::class, 'getByProvince']);
+Route::get('/comments', [CommentsController::class, 'index']);
+Route::post('/comments', [CommentsController::class, 'store']);
+
+//chatbox ai
+Route::get('/chat', [ChatBoxAiController::class, 'chat']);
+Route::post('/chat', [ChatBoxAiController::class, 'chat']);
+//Quên mật khẩu
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+
+
+

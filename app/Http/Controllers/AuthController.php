@@ -6,6 +6,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Http\Requests\ForgotPasswordRequest;
+
+
 
 class AuthController extends Controller
 {
@@ -59,6 +64,36 @@ class AuthController extends Controller
             'message' => 'Đăng nhập thành công!',
             'user' => $user,
             'token' => $token
+        ]);
+    }
+
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $email = $request->validated()['email'];
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Email không tồn tại trong hệ thống.'
+            ], 404);
+        }
+
+        // Tạo mật khẩu ngẫu nhiên
+        $newPassword = Str::random(10);
+
+        // Gửi email cho người dùng
+        Mail::raw("Mật khẩu mới của bạn là: {$newPassword}", function ($message) use ($email) {
+            $message->to($email)
+                ->subject('Khôi phục mật khẩu - Dolaphone');
+        });
+
+        // Cập nhật mật khẩu mới trong database
+        $user->update(['password' => Hash::make($newPassword)]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Mật khẩu mới đã được gửi đến email của bạn!'
         ]);
     }
 }
