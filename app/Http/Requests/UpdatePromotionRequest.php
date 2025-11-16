@@ -29,6 +29,12 @@ class UpdatePromotionRequest extends FormRequest
                 'max:255',
                 Rule::unique('promotions', 'promotion_name')->ignore($this->route('promotion'), 'promotion_id'),
             ],
+            'discount_code' => [
+                'nullable',
+                'string',
+                'max:50',
+                Rule::unique('promotions', 'discount_code')->ignore($this->route('promotion'), 'promotion_id'),
+            ],
             'description' => 'nullable|string',
             'discount_rate' => 'required|numeric|min:0|max:100',
             'start_date' => 'required|date',
@@ -42,6 +48,10 @@ class UpdatePromotionRequest extends FormRequest
             'promotion_name.string' => 'Tên chương trình khuyến mãi phải là chuỗi ký tự hợp lệ.',
             'promotion_name.max' => 'Tên chương trình khuyến mãi không được vượt quá 255 ký tự.',
             'promotion_name.unique' => 'Tên chương trình khuyến mãi đã tồn tại.',
+
+            'discount_code.string' => 'Mã giảm giá phải là chuỗi ký tự hợp lệ.',
+            'discount_code.max' => 'Mã giảm giá không được vượt quá 50 ký tự.',
+            'discount_code.unique' => 'Mã giảm giá đã tồn tại.',
 
             'description.string' => 'Mô tả chương trình khuyến mãi phải là chuỗi ký tự hợp lệ.',
 
