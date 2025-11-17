@@ -19,6 +19,7 @@ use App\Http\Controllers\VariationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatBoxAiController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ProductFavoriteController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WardController;
@@ -120,3 +121,7 @@ Route::post('/comments', [CommentsController::class, 'store']);
 //chatbox ai
 Route::get('/chat', [ChatBoxAiController::class, 'chat']);
 Route::post('/chat', [ChatBoxAiController::class, 'chat']);
+
+//Favorite product
+Route::get('/favorite', [ProductFavoriteController::class, 'index']);
+Route::post('/favorite', [ProductFavoriteController::class, 'store']);
