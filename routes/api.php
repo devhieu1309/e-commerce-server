@@ -19,7 +19,8 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WarrantyController;
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\WardController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -111,11 +112,17 @@ Route::get('/warranty', [WarrantyController::class, 'index']);
 Route::get('comments', [CommentsController::class, 'index']);
 Route::post('comments', [CommentsController::class, 'store']);
 
+
 //Địa chỉ khách hàng 
-Route::apiResource('addresses',AddressController::class);
+Route::apiResource('addresses', AddressController::class);
 Route::patch('addresses/{id}/default', [AddressController::class, 'setDefault']);
-Route::get('/countries', [LocationController::class, 'countries']);
-Route::get('/provinces', [LocationController::class, 'provinces']);
-Route::get('/districts/{provinceCode}', [LocationController::class, 'districts']);
-Route::get('/wards/{districtCode}', [LocationController::class, 'wards']);
-      
+Route::get('/provinces', [ProvinceController::class, 'index']);
+Route::get('/wards/{provinceId}', [WardController::class, 'getByProvince']);
+// Địa chỉ khách hàng (bảng customer_addresses)
+Route::prefix('customer-addresses')->group(function () {
+    Route::get('/', [AddressController::class, 'index']);
+    Route::post('/', [AddressController::class, 'store']);
+    Route::put('/{id}', [AddressController::class, 'update']);
+    Route::delete('/{id}', [AddressController::class, 'destroy']);
+    Route::patch('/{id}/default', [AddressController::class, 'setDefault']);
+});

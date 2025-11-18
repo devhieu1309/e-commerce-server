@@ -20,7 +20,6 @@ class UpdateAddressRequest extends FormRequest
             'detailed_address'  => 'required|string|max:255',
             'countries_id'      => 'nullable|exists:countries,countries_id',
             'provinces_id'      => 'required|integer|exists:provinces,provinces_id',
-            'districts_id'      => 'required|integer|exists:districts,districts_id',
             'wards_id'          => 'required|integer|exists:wards,wards_id',
             'zip'               => 'nullable|string|max:10',
             'isDefault'         => 'boolean',
@@ -34,11 +33,7 @@ class UpdateAddressRequest extends FormRequest
             'phone.required'            => 'Vui lòng nhập số điện thoại.',
             'detailed_address.required' => 'Vui lòng nhập địa chỉ chi tiết.',
             'provinces_id.required'     => 'Vui lòng chọn tỉnh/thành phố.',
-            'districts_id.required'     => 'Vui lòng chọn quận/huyện.',
             'wards_id.required'         => 'Vui lòng chọn phường/xã.',
-            'provinces_id.exists'       => 'Tỉnh/Thành không hợp lệ.',
-            'districts_id.exists'       => 'Quận/Huyện không hợp lệ.',
-            'wards_id.exists'           => 'Phường/Xã không hợp lệ.',
         ];
     }
 }
