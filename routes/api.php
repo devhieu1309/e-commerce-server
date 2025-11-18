@@ -24,6 +24,8 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\WarrantyController;
+use App\Http\Controllers\AddressController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -44,7 +46,6 @@ Route::apiResource('variations', VariationController::class);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::apiResource('shipping_methods', ShippingMethodController::class);
-Route::apiResource('users', UserController::class);
 Route::apiResource('cart', ShoppingCartController::class);
 
 
@@ -107,6 +108,11 @@ Route::delete('/newsBlocks/{id}', [NewsBlocksController::class, 'destroy']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+// CRUD user
+Route::apiResource('users', UserController::class);
+// API đổi mật khẩu người dùng
+Route::patch('/users/{id}/change-password', [UserController::class, 'changePassword']);
+
 //Tìm kiếm thông tin bảo hành bằng số serial
 Route::get('/warranty/search/{serial}', [WarrantyController::class, 'searchBySerial']);
 Route::get('/warranty', [WarrantyController::class, 'index']);
@@ -133,3 +139,17 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 
 
 
+
+//Địa chỉ khách hàng 
+Route::apiResource('addresses', AddressController::class);
+Route::patch('addresses/{id}/default', [AddressController::class, 'setDefault']);
+Route::get('/provinces', [ProvinceController::class, 'index']);
+Route::get('/wards/{provinceId}', [WardController::class, 'getByProvince']);
+// Địa chỉ khách hàng (bảng customer_addresses)
+Route::prefix('customer-addresses')->group(function () {
+    Route::get('/', [AddressController::class, 'index']);
+    Route::post('/', [AddressController::class, 'store']);
+    Route::put('/{id}', [AddressController::class, 'update']);
+    Route::delete('/{id}', [AddressController::class, 'destroy']);
+    Route::patch('/{id}/default', [AddressController::class, 'setDefault']);
+});
