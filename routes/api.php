@@ -64,6 +64,11 @@ Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::get('/users/search', [UserController::class, 'search']);
 Route::apiResource('users', UserController::class);
+// Khóa/Mở tài khoản người dùng
+Route::patch('/users/{id}/toggle', [UserController::class, 'toggleStatus']);
+
+
+
 // chương trình khuyến mãi
 Route::apiResource('promotions', PromotionController::class);
 

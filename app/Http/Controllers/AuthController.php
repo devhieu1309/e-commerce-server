@@ -49,12 +49,21 @@ class AuthController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
+        if ($user && !$user->is_active) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tài khoản của bạn đã bị khóa'
+            ], 403);
+        }
+
+
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Email hoặc mật khẩu không đúng!'
             ], 401);
         }
+
 
         // Nếu muốn tạo token API (nếu dùng Sanctum)
         $token = $user->createToken('api-token')->plainTextToken;
@@ -65,6 +74,13 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $token
         ]);
+
+        if (!$user->is_active) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tài khoản của bạn đã bị khóa'
+            ], 403);
+        }
     }
 
     public function forgotPassword(ForgotPasswordRequest $request)

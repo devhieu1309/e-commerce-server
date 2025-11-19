@@ -103,7 +103,7 @@ class UserController extends Controller
             'data' => $users
         ]);
     }
-    
+
     public function show($id)
     {
         $user = User::find($id);
@@ -135,4 +135,21 @@ class UserController extends Controller
             'message' => 'Đổi mật khẩu thành công.',
         ]);
     }
+
+    public function toggleStatus($id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => $user->is_active ? 'Đã mở khóa tài khoản' : 'Đã khóa tài khoản',
+            'data' => $user
+        ]);
+    }
+
+   
+
 }
