@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);  // 1
         $this->call(ProductItemSeeder::class);
         $this->call(ProductConfigurationSeeder::class);
-         $this->call(ProductConfigurationSeeder::class);
+        $this->call(ProductConfigurationSeeder::class);
         $this->call(VideoReviewSeeder::class);
 
         $this->call(PromotionSeeder::class);
@@ -48,5 +48,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ShoppingOrderSeeder::class);
         $this->call(OrderLineSeeder::class);
+        $this->call(CompareProductSeeder::class);
     }
 }

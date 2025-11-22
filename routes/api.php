@@ -25,7 +25,7 @@ use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\WarrantyController;
 use App\Http\Controllers\AddressController;
-
+use App\Http\Controllers\CompareProductController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -158,3 +158,10 @@ Route::prefix('customer-addresses')->group(function () {
     Route::delete('/{id}', [AddressController::class, 'destroy']);
     Route::patch('/{id}/default', [AddressController::class, 'setDefault']);
 });
+
+//So sanh san pham
+Route::get('compare', [CompareProductController::class, 'index']);
+Route::post('compare', [CompareProductController::class, 'store']);
+Route::get('compare/{compare_product_id}', [CompareProductController::class, 'show']);
+Route::put('compare/{compare_product_id}', [CompareProductController::class, 'update']);
+Route::delete('compare/{compare_product_id}', [CompareProductController::class, 'destroy']);
