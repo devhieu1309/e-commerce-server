@@ -36,7 +36,7 @@ class ProductFavoriteController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->all();
         try {
 
             $favoriteProduct = $this->favoriteService->saveFavoriteProduct($data);

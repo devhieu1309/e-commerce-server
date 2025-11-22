@@ -13,9 +13,15 @@ class FavoriteRepository
         $this->favoriteProduct = $favoriteProduct;
     }
 
+    // public function getAll()
+    // {
+    //     return $this->favoriteProduct->get();
+    // }
     public function getAll()
     {
-        return $this->favoriteProduct->get();
+        return $this->favoriteProduct
+            ->with('productItem.product') // load chi tiết productItem và product
+            ->get();
     }
 
     public function getById($id)

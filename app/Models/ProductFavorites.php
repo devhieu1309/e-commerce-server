@@ -21,9 +21,9 @@ class ProductFavorites extends Model
         'updated_at'
     ];
 
-    public function producItem()
+    public function productItem()
     {
-        return $this->belongsTo(ProductItem::class, 'product_items', 'product_item_id');
+        return $this->belongsTo(ProductItem::class, 'product_item_id', 'product_item_id');
     }
 
     public function user()

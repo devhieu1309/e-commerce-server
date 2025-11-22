@@ -18,7 +18,7 @@ class ProductFavoritiesSeeder extends Seeder
         // Thêm 5 bản ghi ngẫu nhiên
         foreach (range(1, 5) as $i) {
             ProductFavorites::create([
-                'user_id' => $users->random()->id,
+                'user_id' => $users->random()->user_id,
                 'product_item_id' => $productItems->random()->product_item_id,
             ]);
         }
