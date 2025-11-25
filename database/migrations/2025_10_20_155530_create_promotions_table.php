@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->bigIncrements('promotion_id');
             $table->string('promotion_name', 255);
+            $table->string('discount_code', 50)->unique()->nullable();
             $table->text('description')->nullable();
             $table->decimal('discount_rate', 5,2);
             $table->timestamp('start_date')->nullable(false);
