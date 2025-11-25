@@ -45,34 +45,52 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
+        $request->validate([
+            'email'    => 'required',
+            'password' => 'required'
+        ]);
 
-        $user = User::where('email', $credentials['email'])->first();
+        $loginInput = $request->email;
 
-        if ($user && !$user->is_active) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Tài khoản của bạn đã bị khóa'
-            ], 403);
+        // ================
+        // 1. ADMIN LOGIN (username)
+        // ================
+        if (!str_contains($loginInput, '@')) {
+            // Đăng nhập bằng username admin
+            $user = User::where('email', $loginInput)
+                ->where('role', 'admin')
+                ->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Email của bạn không đúng!'
+                ], 401);
+            }
+        }
+        // ================
+        // 2. NGƯỜI DÙNG LOGIN (email)
+        // ================
+        else {
+            // Check email của người dùng
+            $user = User::where('email', $loginInput)->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Email hoặc mật khẩu không đúng!'
+                ], 401);
+            }
         }
 
-
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Email hoặc mật khẩu không đúng!'
-            ], 401);
-        }
-
-
-        // Nếu muốn tạo token API (nếu dùng Sanctum)
+        // Tạo token API (Sanctum)
         $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Đăng nhập thành công!',
-            'user' => $user,
-            'token' => $token
+            'user'    => $user,
+            'token'   => $token
         ]);
 
         if (!$user->is_active) {
