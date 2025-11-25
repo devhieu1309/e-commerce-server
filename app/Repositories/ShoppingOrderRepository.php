@@ -30,4 +30,19 @@ class ShoppingOrderRepository
     ])->find($id);
 }
 
+    /**
+     * Lấy đơn hàng gần nhất của user để lấy địa chỉ giao hàng
+     */
+    public function getLatestOrderByUserId($userId)
+    {
+        return ShoppingOrder::with([
+            'address.province',
+            'address.ward',
+            'user'
+        ])
+            ->where('user_id', $userId)
+            ->orderByDesc('order_date')
+            ->first();
+    }
+
 }

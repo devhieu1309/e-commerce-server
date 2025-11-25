@@ -2,17 +2,14 @@
 
 namespace Database\Seeders;
 
-<<<<<<< HEAD
 use App\Models\News_Blocks;
 use App\Models\Product;
 use App\Models\ProductItem;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\VariationOption;
-=======
-use Illuminate\Database\Seeder;
-use App\Models\User;
->>>>>>> bui-tham-ky/1-crud-user
+use Illuminate\Support\Facades\Hash;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +18,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::create([
+            'name' => 'Administrator',
+            'email' => 'admin123@gmail.com',
+            'password' => Hash::make('Admin@123'),
+            'role' => 'admin', 
+        ]);
+
         $this->call(CategorySeeder::class);
         $this->call(ShippingMethodSeeder::class);
         $this->call(OrderStatusSeeder::class);

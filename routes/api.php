@@ -118,6 +118,9 @@ Route::post('comments', [CommentsController::class, 'store']);
 // Cổng thanht toán
 Route::post('/momo_payment', [CheckoutController::class, 'momo_payment']);
 
+// Lấy thông tin user và địa chỉ giao hàng để điền sẵn vào form nhận hàng
+Route::get('/delivery-info', [CheckoutController::class, 'getDeliveryInfo']);
+
 
 // lấy danh sách tỉnh thành và phường/xã theo tình thành
 Route::get('/provinces', [ProvinceController::class, 'index']);
