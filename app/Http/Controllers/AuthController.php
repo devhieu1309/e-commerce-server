@@ -56,26 +56,59 @@ class AuthController extends Controller
         // 1. ADMIN LOGIN (username)
         // ================
         if (!str_contains($loginInput, '@')) {
-            // Đăng nhập bằng username admin
+
             $user = User::where('email', $loginInput)
                 ->where('role', 'admin')
                 ->first();
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user) {
                 return response()->json([
                     'status'  => false,
-                    'message' => 'Email của bạn không đúng!'
+                    'message' => 'Tài khoản admin không tồn tại!'
+                ], 401);
+            }
+
+            // Check tài khoản có bị khóa không
+            if (!$user->is_active) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tài khoản của bạn đã bị khóa'
+                ], 403);
+            }
+
+            // Check mật khẩu
+            if (!Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Mật khẩu không đúng!'
                 ], 401);
             }
         }
+
         // ================
-        // 2. NGƯỜI DÙNG LOGIN (email)
+        // 2. USER LOGIN (email)
         // ================
         else {
-            // Check email của người dùng
+
             $user = User::where('email', $loginInput)->first();
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Email không tồn tại!'
+                ], 401);
+            }
+
+            // Check tài khoản bị khóa
+            if (!$user->is_active) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tài khoản của bạn đã bị khóa'
+                ], 403);
+            }
+
+            // Check mật khẩu
+            if (!Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'status'  => false,
                     'message' => 'Email hoặc mật khẩu không đúng!'
@@ -83,7 +116,9 @@ class AuthController extends Controller
             }
         }
 
-        // Tạo token API (Sanctum)
+        // ================
+        // LOGIN THÀNH CÔNG
+        // ================
         $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
@@ -100,6 +135,7 @@ class AuthController extends Controller
             ], 403);
         }
     }
+
 
     public function forgotPassword(ForgotPasswordRequest $request)
     {
