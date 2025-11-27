@@ -20,6 +20,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ChatBoxAiController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ProductFavoriteController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WardController;
@@ -158,3 +159,8 @@ Route::prefix('customer-addresses')->group(function () {
     Route::delete('/{id}', [AddressController::class, 'destroy']);
     Route::patch('/{id}/default', [AddressController::class, 'setDefault']);
 });
+
+//Favorite product
+Route::get('/favorite', [ProductFavoriteController::class, 'index']);
+Route::post('/favorite', [ProductFavoriteController::class, 'store']);
+Route::delete('/favorite/{product_favorite_id}', [ProductFavoriteController::class, 'delete']);
