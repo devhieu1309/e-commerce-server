@@ -125,3 +125,4 @@ Route::post('/chat', [ChatBoxAiController::class, 'chat']);
 //Favorite product
 Route::get('/favorite', [ProductFavoriteController::class, 'index']);
 Route::post('/favorite', [ProductFavoriteController::class, 'store']);
+Route::delete('/favorite/{product_favorite_id}', [ProductFavoriteController::class, 'delete']);

@@ -32,11 +32,11 @@ class FavoriteService
         return $result;
     }
 
-    public function updateFavoriteProduct($data)
-    {
-        $result = $this->favoriteRepository->update($data);
-        return $result;
-    }
+    // public function updateFavoriteProduct($data)
+    // {
+    //     $result = $this->favoriteRepository->update($data);
+    //     return $result;
+    // }
 
     public function deleteFavoriteProduct($id)
     {

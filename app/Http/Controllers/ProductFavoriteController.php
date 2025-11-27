@@ -53,4 +53,22 @@ class ProductFavoriteController extends Controller
             ], 500);
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $favoriteProduct = $this->favoriteService->deleteFavoriteProduct($id);
+
+            return response()->json([
+                'message' => 'Xóa sản phẩm yêu thích thành công.',
+                'data' => $favoriteProduct
+            ], 200);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'error' => 'Lỗi khi xóa sản phẩm yêu thích.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
