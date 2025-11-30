@@ -13,41 +13,42 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
-        $this->call(CategorySeeder::class);
-        $this->call(ShippingMethodSeeder::class);
-        $this->call(OrderStatusSeeder::class);
-        $this->call(PaymentTypeSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(NewsSeeder::class);
-        $this->call(BannerSeeder::class);
-        // $this->call(OrderStatusSeeder::class);
-        $this->call(NewsBlocksSeeder::class);
-        $this->call(VariationSeeder::class);
-        $this->call(VariationOptionSeeder::class);
-        $this->call(ProductSeeder::class);  // 1
-        $this->call(ProductItemSeeder::class);
-        $this->call(ProductConfigurationSeeder::class);
-        $this->call(ProductConfigurationSeeder::class);
-        $this->call(VideoReviewSeeder::class);
+        /**
+         * Seed the application's database.
+         */
+        public function run(): void
+        {
+                $this->call(CategorySeeder::class);
+                $this->call(ShippingMethodSeeder::class);
+                $this->call(OrderStatusSeeder::class);
+                $this->call(PaymentTypeSeeder::class);
+                $this->call(UserSeeder::class);
+                $this->call(NewsSeeder::class);
+                $this->call(BannerSeeder::class);
+                // $this->call(OrderStatusSeeder::class);
+                $this->call(NewsBlocksSeeder::class);
+                $this->call(VariationSeeder::class);
+                $this->call(VariationOptionSeeder::class);
+                $this->call(ProductSeeder::class);  // 1
+                $this->call(ProductItemSeeder::class);
+                $this->call(ProductConfigurationSeeder::class);
+                $this->call(ProductConfigurationSeeder::class);
+                $this->call(VideoReviewSeeder::class);
 
-        $this->call(PromotionSeeder::class);
-        $this->call(ProvinceSeeder::class);
-        $this->call(WardSeeder::class);
-        $this->call(AddressSeeder::class);
-        $this->call(StoreBranchSeeder::class);
+                $this->call(PromotionSeeder::class);
+                $this->call(ProvinceSeeder::class);
+                $this->call(WardSeeder::class);
+                $this->call(AddressSeeder::class);
+                $this->call(StoreBranchSeeder::class);
 
-        $this->call(WarrantySeeder::class);
+                $this->call(WarrantySeeder::class);
 
-        $this->call(ShoppingCartSeeder::class);
-        $this->call(CommentsSeeder::class);
+                $this->call(ShoppingCartSeeder::class);
+                $this->call(CommentsSeeder::class);
 
-        $this->call(ShoppingOrderSeeder::class);
-        $this->call(OrderLineSeeder::class);
-        $this->call(ProductFavoritiesSeeder::class);
-    }
+                $this->call(ShoppingOrderSeeder::class);
+                $this->call(OrderLineSeeder::class);
+                $this->call(ProductFavoritiesSeeder::class);
+                $this->call(CompareProductSeeder::class);
+        }
 }
