@@ -20,7 +20,7 @@ class CompareProductSeeder extends Seeder
         $users = User::all();
         $productItem = ProductItem::all();
 
-        foreach (range(1, 5) as $i) {
+        foreach (range(1, 3) as $i) {
             CompareProducts::create([
                 'user_id' => $users->random()->user_id,
                 'product_item_id' => $productItem->random()->product_item_id,

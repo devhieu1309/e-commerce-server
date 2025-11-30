@@ -29,7 +29,7 @@ class CompareProductRepository
         $compareProduct = new $this->compareProduct;
 
         $compareProduct->product_item_id = $data['product_item_id'];
-        $compareProduct->user_id = $data['user_id'];
+        $compareProduct->user_id = $data['user_id'] ?? [];
 
         $compareProduct->save();
 

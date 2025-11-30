@@ -52,7 +52,7 @@ class CompareProductController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate();
+        $data = $request->all();
         try {
 
             $compareProduct = $this->compareProductService->saveCompareProduct($data);
