@@ -58,3 +58,4 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderLineSeeder::class);
     }
 }
+
