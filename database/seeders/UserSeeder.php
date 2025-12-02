@@ -26,12 +26,5 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin123'),
         ]);
 
-        User::create([
-            'name' => 'Kỳ Bùi',
-            'email' => 'kybui09@gmail.com',
-            'phone' => '0123456789',
-            'role' => 'user',
-            'password' => Hash::make('kybui123'),
-        ]);
     }
 }
