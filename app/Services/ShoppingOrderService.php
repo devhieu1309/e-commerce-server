@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\ShoppingOrderRepository;
+use App\Models\User;
 
 class ShoppingOrderService
 {
@@ -147,6 +148,7 @@ class ShoppingOrderService
         return $this->repo->getOrders();
     }
 
+
     public function updateOrderStatus($orderId, $newStatusId)
     {
         $order = $this->repo->getOrderDetail($orderId);
@@ -166,5 +168,55 @@ class ShoppingOrderService
             'order' => $updatedOrder,
             'valid_next_status_options' => $validOptions,
         ];
+    }
+
+    /**
+     * Lấy thông tin user và địa chỉ giao hàng gần nhất để điền sẵn vào form nhận hàng
+     */
+    public function getDeliveryInfo($userId)
+    {
+        // Lấy thông tin user
+        $user = User::find($userId);
+        
+        if (!$user) {
+            return null;
+        }
+
+        // Lấy đơn hàng gần nhất của user
+        $latestOrder = $this->repo->getLatestOrderByUserId($userId);
+
+        // Chuẩn bị dữ liệu trả về
+        $data = [
+            'email' => $user->email,
+            'name' => $user->name,
+            'phone' => $user->phone,
+            'detailed_address' => null,
+            'province_id' => null,
+            'province_name' => null,
+            'ward_id' => null,
+            'ward_name' => null,
+        ];
+
+        // Nếu có đơn hàng gần nhất, lấy thông tin địa chỉ đầy đủ
+        if ($latestOrder && $latestOrder->address) {
+            $address = $latestOrder->address;
+            
+            // Địa chỉ chi tiết
+            $data['detailed_address'] = $address->detailed_address;
+            
+            // Thông tin tỉnh/thành phố
+            if ($address->province) {
+                $data['province_id'] = $address->province->provinces_id;
+                $data['province_name'] = $address->province->name ?? $address->province->full_name;
+            }
+            
+            // Thông tin xã/phường
+            if ($address->ward) {
+                $data['ward_id'] = $address->ward->wards_id;
+                $data['ward_name'] = $address->ward->name ?? $address->ward->full_name;
+            }
+        }
+
+        return $data;
     }
 }

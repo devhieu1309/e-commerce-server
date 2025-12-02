@@ -20,12 +20,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ChatBoxAiController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ProductFavoriteController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\StoreBranchController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\WarrantyController;
 use App\Http\Controllers\AddressController;
-
+use App\Http\Controllers\CompareProductController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -131,6 +132,9 @@ Route::post('comments', [CommentsController::class, 'store']);
 // Cổng thanht toán
 Route::post('/momo_payment', [CheckoutController::class, 'momo_payment']);
 
+// Lấy thông tin user và địa chỉ giao hàng để điền sẵn vào form nhận hàng
+Route::get('/delivery-info', [CheckoutController::class, 'getDeliveryInfo']);
+
 
 // lấy danh sách tỉnh thành và phường/xã theo tình thành
 Route::get('/provinces', [ProvinceController::class, 'index']);
@@ -160,3 +164,14 @@ Route::prefix('customer-addresses')->group(function () {
     Route::delete('/{id}', [AddressController::class, 'destroy']);
     Route::patch('/{id}/default', [AddressController::class, 'setDefault']);
 });
+
+//Favorite product
+Route::get('/favorite', [ProductFavoriteController::class, 'index']);
+Route::post('/favorite', [ProductFavoriteController::class, 'store']);
+Route::delete('/favorite/{product_favorite_id}', [ProductFavoriteController::class, 'delete']);
+//So sanh san pham
+Route::get('compare', [CompareProductController::class, 'index']);
+Route::post('compare', [CompareProductController::class, 'store']);
+Route::get('compare/{compare_product_id}', [CompareProductController::class, 'show']);
+Route::put('compare/{compare_product_id}', [CompareProductController::class, 'update']);
+Route::delete('compare/{compare_product_id}', [CompareProductController::class, 'destroy']);

@@ -58,4 +58,12 @@ class User extends Authenticatable
             'is_active' => 'boolean', //them
         ];
     }
+
+    /**
+     * Một user có nhiều đơn hàng
+     */
+    public function orders()
+    {
+        return $this->hasMany(ShoppingOrder::class, 'user_id', 'user_id');
+    }
 }

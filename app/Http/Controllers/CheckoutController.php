@@ -3,9 +3,62 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\ShoppingOrderService;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
+    protected $shoppingOrderService;
+
+    public function __construct(ShoppingOrderService $shoppingOrderService)
+    {
+        $this->shoppingOrderService = $shoppingOrderService;
+    }
+
+    /**
+     * Lấy thông tin user và địa chỉ giao hàng để điền sẵn vào form nhận hàng
+     * GET /api/delivery-info
+     */
+    public function getDeliveryInfo(Request $request)
+    {
+        try {
+            // Lấy user_id từ request hoặc từ authenticated user
+            // $userId = $request->input('user_id');
+            $userId = 1;
+            
+            // Nếu không có user_id trong request, thử lấy từ authenticated user
+            if (!$userId && Auth::check()) {
+                $userId = Auth::id();
+            }
+
+            if (!$userId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User ID is required'
+                ], 400);
+            }
+
+            $deliveryInfo = $this->shoppingOrderService->getDeliveryInfo($userId);
+
+            if (!$deliveryInfo) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $deliveryInfo
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function execPostRequest($url, $data)
     {
         $ch = curl_init($url);
