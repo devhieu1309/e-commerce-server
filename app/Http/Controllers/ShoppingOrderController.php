@@ -44,18 +44,33 @@ class ShoppingOrderController extends Controller
     /**
      * Display the specified resource.
      */
-public function show($id)
-{
-    try {
-        $shoppingOrder = $this->shoppingOrderService->getShoppingOrderDetail($id);
-        return response()->json($shoppingOrder, 200);
-    } catch (Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage(),
-        ], 500);
+    public function show($id)
+    {
+        try {
+            $orderDetail = $this->shoppingOrderService->getShoppingOrderDetail($id);
+            return response()->json($orderDetail, 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
-}
+
+    
+
+    public function getOrdersByUser($userId)
+    {
+        try {
+            $orders = $this->shoppingOrderService->getOrdersByUserId($userId);
+            return response()->json($orders, 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -68,9 +83,25 @@ public function show($id)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ShoppingOrder $shoppingOrder)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'order_status_id' => 'required|exists:order_status,order_status_id',
+        ]);
+        try {
+            $result = $this->shoppingOrderService->updateOrderStatus($id, $request->order_status_id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật trạng thái đơn hàng thành công.',
+                'order' => $result['order'],
+                'valid_next_status_options' => $result['valid_next_status_options'],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**

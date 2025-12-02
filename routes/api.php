@@ -61,6 +61,8 @@ Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggl
 Route::apiResource('payment-type', PaymentTypeController::class);
 Route::apiResource('shopping-order', ShoppingOrderController::class);
 
+Route::get('shopping-order/user/{userId}', [ShoppingOrderController::class, 'getOrdersByUser']);
+
 Route::apiResource('shipping_methods', ShippingMethodController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::get('/users/search', [UserController::class, 'search']);
