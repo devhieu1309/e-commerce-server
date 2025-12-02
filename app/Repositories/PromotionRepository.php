@@ -23,6 +23,7 @@ class PromotionRepository{
         $promotion = new $this->promotion;
 
         $promotion->promotion_name = $data['promotion_name'];
+        $promotion->discount_code = $data['discount_code'] ?? null;
         $promotion->description = $data['description'] ?? null;
         $promotion->discount_rate = $data['discount_rate'];
         $promotion->start_date = $data['start_date'];
@@ -45,6 +46,7 @@ class PromotionRepository{
         $promotion = $this->promotion->find($id);
 
         $promotion->promotion_name = $data['promotion_name'];
+        $promotion->discount_code = $data['discount_code'] ?? null;
         $promotion->description = $data['description'];
         $promotion->discount_rate = $data['discount_rate'];
         $promotion->start_date = $data['start_date'];

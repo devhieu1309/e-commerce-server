@@ -22,6 +22,7 @@ class PromotionFactory extends Factory
 
         return [
             'promotion_name' => $this->faker->sentence(3),  // Ví dụ: "Ưu đãi mùa hè"
+            'discount_code' => $this->faker->unique()->regexify('[A-Z0-9]{6,10}'), // Mã giảm giá ngẫu nhiên
             'description' => $this->faker->paragraph(2),    // Mô tả khuyến mãi
             'discount_rate' => $this->faker->randomFloat(2, 1, 80), // 1% → 80%
             'start_date' => $startDate,

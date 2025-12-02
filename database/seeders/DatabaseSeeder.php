@@ -5,10 +5,11 @@ namespace Database\Seeders;
 use App\Models\News_Blocks;
 use App\Models\Product;
 use App\Models\ProductItem;
-use Illuminate\Database\Seeder;
+
 use App\Models\User;
 use App\Models\VariationOption;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Seeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
         $this->call(VariationOptionSeeder::class);
         $this->call(ProductSeeder::class);  // 1
         $this->call(ProductItemSeeder::class);
+        $this->call(ProductConfigurationSeeder::class);
          $this->call(ProductConfigurationSeeder::class);
         $this->call(VideoReviewSeeder::class);
 
