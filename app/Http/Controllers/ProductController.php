@@ -18,14 +18,10 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     protected $productService;
-    protected $productItemService;
-    protected $productConfiguarationService;
 
-    public function __construct(ProductService $productService, ProductItemService $productItemService, ProductConfiguarationService $productConfiguarationService)
+    public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
-        $this->productItemService = $productItemService;
-        $this->productConfiguarationService =  $productConfiguarationService;
     }
     // public function index()
     // {
@@ -54,109 +50,14 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $uploadedPaths = [];
-        $dataProduct = $request->only([
-            'product_name',
-            'description',
-            'category_id'
-        ]);
-        DB::beginTransaction();
         try {
-            // Lưu thông tin chung sản phẩm
-            $product = $this->productService->saveProductData($dataProduct);
-
-            // Lưu biến thể từng sản phẩm
-            if (!empty($request->items) && is_array($request->items)) {
-                foreach ($request->items as $index => $item) {
-
-                    // 2.a Xử lý file image (nếu có)
-                    $imagePath = null;
-
-                    if ($request->hasFile("items.$index.image")) {
-                        $file = $request->file("items.$index.image");
-
-                        $filename = time() . '_' . preg_replace('/\s+/', '_', ($item['SKU'] ?? 'item')) . '.' . $file->getClientOriginalExtension();
-
-                        Storage::disk('public')->put(
-                            'product_items/' . $filename,
-                            file_get_contents($file)
-                        );
-
-                        $path = 'storage/product_items/' . $filename;
-                        $imagePath = $path;
-
-
-                        $uploadedPaths[] = $path;
-                    }
-
-                    //  2.b Tạo product_item
-                    $dataProductItem = [
-                        'product_id'   => $product->product_id,
-                        'SKU'          => $item['SKU'] ?? null,
-                        'qty_in_stock' => isset($item['qty_in_stock']) ? $item['qty_in_stock'] : 0,
-                        'price'        => isset($item['price']) ? $item['price'] : 0,
-                        'image' => $imagePath,
-                    ];
-
-                    $productItem = $this->productItemService->saveProductItemData($dataProductItem);
-                    // 3 Gắn option cho từng item
-                    if (!empty($item['variation_options']) && is_array($item['variation_options'])) {
-                        foreach ($item['variation_options'] as $optionId) {
-                            $dataProductConfiguration = [
-                                'product_item_id' => $productItem->product_item_id,
-                                'variation_option_id' => $optionId,
-                            ];
-                            $productConfiguaration = $this->productConfiguarationService->saveProductConfiguarationData($dataProductConfiguration);
-                        }
-                    }
-                }
-            }
-            DB::commit();
-
-            // Load lại product kèm items + configurations
-            $product->load(['items.variationOptions']);
-
-            $product =  [
-                'product_id' => $product->product_id,
-                'product_name' => $product->product_name,
-                'description' => $product->description,
-                'category_id' => $product->category_id,
-                'created_at' => $product->created_at,
-                'updated_at' => $product->updated_at,
-                'items' => $product->items->map(function ($item) {
-                    return [
-                        'product_item_id' => $item->product_item_id,
-                        'sku' => $item->SKU,
-                        'qty_in_stock' => $item->qty_in_stock,
-                        'price' => $item->price,
-                        'image' => $item->image ? asset($item->image) : null,
-
-                        // Custom lại variation options gọn hợp lý
-                        'variation_options' => $item->variationOptions->map(function ($option) {
-                            return [
-                                'variation_option_id' => $option->variation_option_id,
-                                'variation_option_name' => $option->value,
-                                'variation_id' => $option->variation_id,
-                            ];
-                        }),
-                    ];
-                })
-            ];
+            $product = $this->productService->createProductWithItems($request);
 
             return response()->json([
                 'message' => 'Thêm sản phẩm thành công',
                 'product' => $product,
             ], 201);
         } catch (Exception $e) {
-            DB::rollBack();
-
-            // Xóa các file đã upload nếu có (để tránh file rác)
-            foreach ($uploadedPaths as $p) {
-                if (Storage::disk('public')->exists($p)) {
-                    Storage::disk('public')->delete($p);
-                }
-            }
-
             return response()->json([
                 'error' => 'Lỗi khi tạo sản phẩm: ' . $e->getMessage(),
             ], 500);
@@ -203,122 +104,15 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        // return $request->all();
-        $uploadedPaths = [];
-
-        DB::beginTransaction();
         try {
-            // 1️. Lấy product theo id
-            $product = $this->productService->findById($id);
-            if (!$product) {
+            $productResponse = $this->productService->updateProductWithItems($id, $request);
+
+            if (!$productResponse) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Không tìm thấy sản phẩm',
                 ], 404);
             }
-
-            // 2️. Cập nhật thông tin chung của sản phẩm
-            $dataProduct = $request->only(['product_name', 'description', 'category_id']);
-            $this->productService->updateProductData($product, $dataProduct);
-
-            // 3️. Cập nhật biến thể sản phẩm
-            if (!empty($request->items) && is_array($request->items)) {
-                foreach ($request->items as $index => $item) {
-                    $productItem = null;
-
-                    // Nếu có product_item_id => update, ngược lại => tạo mới
-                    if (isset($item['product_item_id'])) {
-                        $productItem = $this->productItemService->findById($item['product_item_id']);
-                        // return $productItem;
-                        if (!$productItem) continue;
-                    }
-
-                    // 4️. Xử lý ảnh (nếu có upload mới)
-                    $imagePath = $productItem ? $productItem->image : null;
-                    // return $request->file("items.0.image");
-                    if ($request->hasFile("items.$index.image")) {
-                        // return "MINH HIEU";
-                        // return $request->file("items.$index.image");
-                        $file = $request->file("items.$index.image");
-
-                        // Xóa ảnh cũ nếu có
-                        if ($productItem && $productItem->image && Storage::disk('public')->exists(str_replace('storage/', '', $productItem->image))) {
-                            Storage::disk('public')->delete(str_replace('storage/', '', $productItem->image));
-                        }
-
-                        $filename = time() . '_' . preg_replace('/\s+/', '_', ($item['SKU'] ?? 'item')) . '.' . $file->getClientOriginalExtension();
-                        Storage::disk('public')->put('product_items/' . $filename, file_get_contents($file));
-                        $imagePath = 'storage/product_items/' . $filename;
-                        $uploadedPaths[] = $imagePath;
-                    }
-                    // else{
-                    //     return "Lỗi";
-                    // }
-
-                    // 5️. Dữ liệu cập nhật/insert product_item
-                    $dataProductItem = [
-                        'product_id' => $product->product_id,
-                        'SKU' => $item['SKU'] ?? null,
-                        'qty_in_stock' => isset($item['qty_in_stock']) ? $item['qty_in_stock'] : 0,
-                        'price' => isset($item['price']) ? $item['price'] : 0,
-                        'image' => $imagePath,
-                    ];
-
-                    if ($productItem) {
-                        // Update product item
-                        $this->productItemService->updateProductItemData($productItem, $dataProductItem);
-                    } else {
-                        // Tạo mới product item
-                        $productItem = $this->productItemService->saveProductItemData($dataProductItem);
-                    }
-
-                    // 6️. Cập nhật variation options
-                    if (!empty($item['variation_options']) && is_array($item['variation_options'])) {
-                        // Xóa option cũ
-                        $this->productConfiguarationService->deleteByProductItem($productItem->product_item_id);
-
-                        // Thêm mới option
-                        foreach ($item['variation_options'] as $optionId) {
-                            $dataConfig = [
-                                'product_item_id' => $productItem->product_item_id,
-                                'variation_option_id' => $optionId,
-                            ];
-                            $this->productConfiguarationService->saveProductConfiguarationData($dataConfig);
-                        }
-                    }
-                }
-            }
-
-            DB::commit();
-
-            // 7️. Load lại toàn bộ product kèm items và variation options
-            $product->load(['items.variationOptions']);
-
-            // 8️. Chuẩn hóa dữ liệu trả về
-            $productResponse = [
-                'product_id' => $product->product_id,
-                'product_name' => $product->product_name,
-                'description' => $product->description,
-                'category_id' => $product->category_id,
-                'created_at' => $product->created_at,
-                'updated_at' => $product->updated_at,
-                'items' => $product->items->map(function ($item) {
-                    return [
-                        'product_item_id' => $item->product_item_id,
-                        'sku' => $item->SKU,
-                        'qty_in_stock' => $item->qty_in_stock,
-                        'price' => $item->price,
-                        'image' => $item->image ? asset($item->image) : null,
-                        'variation_options' => $item->variationOptions->map(function ($option) {
-                            return [
-                                'variation_option_id' => $option->variation_option_id,
-                                'variation_option_name' => $option->value,
-                                'variation_id' => $option->variation_id,
-                            ];
-                        }),
-                    ];
-                }),
-            ];
 
             return response()->json([
                 'success' => true,
@@ -326,15 +120,6 @@ class ProductController extends Controller
                 'product' => $productResponse,
             ], 200);
         } catch (Exception $e) {
-            DB::rollBack();
-
-            // Xóa file đã upload nếu lỗi
-            foreach ($uploadedPaths as $p) {
-                if (Storage::disk('public')->exists($p)) {
-                    Storage::disk('public')->delete($p);
-                }
-            }
-
             return response()->json([
                 'success' => false,
                 'error' => 'Lỗi khi cập nhật sản phẩm: ' . $e->getMessage(),
