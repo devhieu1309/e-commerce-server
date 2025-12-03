@@ -18,8 +18,11 @@ class ChatBoxAiController extends Controller
     public function chat(Request $request)
     {
         $message = $request->input('message');
-        $reply = $this->chatBoxAiService->chatWithAI($message);
+        $response = $this->chatBoxAiService->chatWithAI($message);
 
-        return response()->json(['reply' => $reply]);
+        return response()->json([
+            'reply' => $response['reply'],
+            'image' => $response['image']
+        ]);
     }
 }
