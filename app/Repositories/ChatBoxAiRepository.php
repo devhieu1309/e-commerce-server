@@ -19,6 +19,23 @@ class ChatBoxAiRepository
 
     public function sendMessage($message)
     {
+        return $this->sendWithContext($message, "");
+    }
+
+    // Hàm mới: gửi message + context sản phẩm
+    public function sendWithContext($message, $context)
+    {
+        $systemPrompt = "
+            Bạn là trợ lý tư vấn sản phẩm điện thoại.
+            Trả lời dựa trên dữ liệu sau. Nếu thiếu thông tin, phải trả lời:
+            'Dạ shop hiện chưa có thông tin sản phẩm này ạ.'
+            
+            DỮ LIỆU SẢN PHẨM:
+            $context
+
+            Luôn trả lời bằng tiếng Việt, giọng tư vấn thân thiện.
+        ";
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
@@ -26,20 +43,16 @@ class ChatBoxAiRepository
 
             'model' => 'llama-3.1-8b-instant',
             'messages' => [
-                ['role' => 'system', 'content' => 'Bạn là một trợ lý ảo hữu ích, luôn trả lời bằng tiếng Việt.'],
+                ['role' => 'system', 'content' => $systemPrompt],
                 ['role' => 'user', 'content' => $message],
             ],
         ]);
 
-        \Log::info(' Groq response: ' . $response->body());
+        \Log::info('Groq Response:', [$response->body()]);
 
-        //  Ghi log khi lỗi
         if ($response->failed()) {
-            \Log::error(' Groq Error: ' . $response->body());
-            return [
-                'error' => true,
-                'message' => $response->body()
-            ];
+            \Log::error('Groq Error:', [$response->body()]);
+            return ['error' => true, 'message' => 'API error'];
         }
 
         return $response->json();
