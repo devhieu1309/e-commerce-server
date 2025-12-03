@@ -38,7 +38,30 @@ class ShoppingOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,user_id',
+            'shipping_method_id' => 'required|exists:shipping_methods,shipping_method_id',
+            'payment_type_id' => 'required|exists:payment_type,payment_type_id',
+            'address' => 'required|array',
+            'items' => 'required|array|min:1',
+            'items.*.product_item_id' => 'required|exists:product_items,product_item_id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+        try {
+            $order = $this->shoppingOrderService->createOrder($validated);
+            return response()->json([
+                'success' => true,
+                'order' => $order,
+                'message' => 'Đặt hàng thành công!'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ], 400);
+        }
     }
 
     /**
@@ -57,7 +80,7 @@ class ShoppingOrderController extends Controller
         }
     }
 
-    
+
 
     public function getOrdersByUser($userId)
     {
