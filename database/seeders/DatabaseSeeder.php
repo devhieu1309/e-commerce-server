@@ -51,6 +51,6 @@ class DatabaseSeeder extends Seeder
                 $this->call(OrderLineSeeder::class);
                 $this->call(ProductFavoritiesSeeder::class);
                 $this->call(CompareProductSeeder::class);
+                $this->call(UserReviewSeeder::class);
         }
 }
-

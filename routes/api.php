@@ -27,6 +27,7 @@ use App\Http\Controllers\WardController;
 use App\Http\Controllers\WarrantyController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CompareProductController;
+use App\Http\Controllers\UserReviewController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -175,3 +176,9 @@ Route::post('compare', [CompareProductController::class, 'store']);
 Route::get('compare/{compare_product_id}', [CompareProductController::class, 'show']);
 Route::put('compare/{compare_product_id}', [CompareProductController::class, 'update']);
 Route::delete('compare/{compare_product_id}', [CompareProductController::class, 'destroy']);
+
+//Đánh giá sản phẩm
+Route::get('/user-reviews', [UserReviewController::class, 'index']);
+Route::get('/user-reviews/{user_review_id}', [UserReviewController::class, 'show']);
+Route::post('/user-reviews', [UserReviewController::class, 'store']);
+Route::delete('/user-reviews/{user_review_id}', [UserReviewController::class, 'destroy']);
