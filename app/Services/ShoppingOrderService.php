@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\ProductItem;
 use App\Repositories\ShoppingOrderRepository;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ShoppingOrderService
 {
@@ -231,27 +233,40 @@ class ShoppingOrderService
 
     public function createOrder($data)
     {
-        [$addressId, $customerAddressId] = $this->handleAddress($data['user_id'], $data['address']);
+        return DB::transaction(function () use ($data) {
 
-        [$orderTotal, $orderLines] = $this->calculateOrderTotalAndLines($data['items']);
+            [$addressId, $customerAddressId] = $this->handleAddress($data['user_id'], $data['address']);
 
-        $order = $this->repo->createOrder([
-            'user_id' => $data['user_id'],
-            'order_date' => now(),
-            'payment_type_id' => $data['payment_type_id'],
-            'address_id' => $addressId,
-            'customer_address_id' => $customerAddressId,
-            'shipping_method_id' => $data['shipping_method_id'],
-            'order_total' => $orderTotal,
-            'order_status_id' => $this->getInitStatusId(),
-        ]);
+            [$orderTotal, $orderLines] = $this->calculateOrderTotalAndLines($data['items']);
 
+            $order = $this->repo->createOrder([
+                'user_id' => $data['user_id'],
+                'order_date' => now(),
+                'payment_type_id' => $data['payment_type_id'],
+                'address_id' => $addressId,
+                'customer_address_id' => $customerAddressId,
+                'shipping_method_id' => $data['shipping_method_id'],
+                'order_total' => $orderTotal,
+                'order_status_id' => $this->getInitStatusId(),
+            ]);
 
-        foreach ($orderLines as $line) {
-            $this->repo->addOrderLine($order->shop_order_id, $line['product_item_id'], $line['quantity'], $line['price']);
-        }
+            foreach ($orderLines as $line) {
+                $productItem = ProductItem::find($line['product_item_id']);
 
-        return $this->getShoppingOrderDetail($order->shop_order_id);
+                // Kiểm tra tồn kho 
+                if (!$productItem || $productItem->qty_in_stock < $line['quantity']) {
+                    throw new \Exception("Sản phẩm #{$line['product_item_id']} không đủ tồn kho");
+                }
+
+                // Giảm tồn kho
+                $productItem->qty_in_stock -= $line['quantity'];
+                $productItem->save();
+
+                // Tạo order line
+                $this->repo->addOrderLine($order->shop_order_id, $line['product_item_id'], $line['quantity'], $line['price']);
+            }
+            return $this->getShoppingOrderDetail($order->shop_order_id);
+        });
     }
 
     private function handleAddress($userId, $addressData)
@@ -284,7 +299,7 @@ class ShoppingOrderService
         $total = 0;
         $lines = [];
         foreach ($items as $item) {
-            $productItem = \App\Models\ProductItem::findOrFail($item['product_item_id']);
+            $productItem = ProductItem::findOrFail($item['product_item_id']);
             $quantity = $item['quantity'];
             $linePrice = $productItem->price;
             $total += $linePrice * $quantity;
