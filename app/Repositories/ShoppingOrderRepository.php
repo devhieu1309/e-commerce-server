@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ShoppingOrder;
+use App\Models\OrderLine;
 
 class ShoppingOrderRepository
 {
@@ -73,5 +74,21 @@ class ShoppingOrderRepository
             ->orderByDesc('order_date')
             ->first();
     }
+
+    public function createOrder(array $data)
+    {
+        return ShoppingOrder::create($data);
+    }
+
+    public function addOrderLine($orderId, $productItemId, $quantity, $price)
+    {
+        return OrderLine::create([
+            'shop_order_id' => $orderId,
+            'product_item_id' => $productItemId,
+            'quantity' => $quantity,
+            'price' => $price,
+        ]);
+    }
+
 
 }

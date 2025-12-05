@@ -20,6 +20,7 @@ class ShoppingOrder extends Model
         'shipping_method_id',
         'order_total',
         'order_status_id',
+        'customer_address_id',
     ];
 
     public function user()
@@ -52,5 +53,9 @@ class ShoppingOrder extends Model
         return $this->hasMany(OrderLine::class, 'shop_order_id', 'shop_order_id');
     }
 
+    public function customerAddress()
+    {
+        return $this->belongsTo(CustomerAddress::class, 'customer_address_id', 'customer_address_id');
+    }
 
 }

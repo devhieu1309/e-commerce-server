@@ -31,4 +31,14 @@ class CustomerAddress extends Model
     {
         return $this->belongsTo(Ward::class, 'wards_id', 'wards_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    public function shoppingOrders()
+    {
+        return $this->hasMany(ShoppingOrder::class, 'address_id', 'customer_address_id');
+    }
 }

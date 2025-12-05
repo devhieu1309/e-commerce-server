@@ -11,21 +11,19 @@ class OrderLineSeeder extends Seeder
 {
     public function run(): void
     {
-        $orders = ShoppingOrder::all();
-        $productItems = ProductItem::all();
+        // $orders = ShoppingOrder::all();
+        // $productItems = ProductItem::all();
 
-        foreach (range(1, 20) as $i) {
-            $order = $orders->random();
-            $item = $productItems->random();
+        // foreach (range(1, 20) as $i) {
+        //     $order = $orders->random();
+        //     $item = $productItems->random();
 
-            OrderLine::create([
-                'shop_order_id' => $order->shop_order_id,
-                'product_item_id' => $item->product_item_id,
-                'quantity' => fake()->numberBetween(1, 3),
-                'price' => $item->price,
-            ]);
-        }
-
-        
+        //     OrderLine::create([
+        //         'shop_order_id' => $order->shop_order_id,
+        //         'product_item_id' => $item->product_item_id,
+        //         'quantity' => fake()->numberBetween(1, 3),
+        //         'price' => $item->price,
+        //     ]);
+        // }
     }
 }
