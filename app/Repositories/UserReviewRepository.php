@@ -16,7 +16,7 @@ class UserReviewRepository
 
     public function getAll()
     {
-        return $this->userReview->with('user', 'shopOrder')->get();
+        return $this->userReview->with('user', 'shoppingOrder')->get();
     }
 
     public function getById($id)
