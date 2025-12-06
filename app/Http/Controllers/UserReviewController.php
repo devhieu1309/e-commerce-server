@@ -6,6 +6,8 @@ use App\Http\Requests\StoreUserReviewRequest;
 use App\Services\UserReviewService;
 use Illuminate\Http\Request;
 
+use function Pest\Laravel\get;
+
 class UserReviewController extends Controller
 {
     //
@@ -22,11 +24,14 @@ class UserReviewController extends Controller
             $userReviews = $this->userReviewService->getAllUserReviews();
             return response()->json([
                 'suscess' => true,
+                'message' => 'Lấy danh sách đánh giá thành công.',
                 'data' => $userReviews
-
             ], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch user reviews'], 500);
+            return response()->json([
+                'error' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -52,10 +57,11 @@ class UserReviewController extends Controller
     public function destroy($id)
     {
         try {
-            $this->userReviewService->deleteUserReview($id);
+            $newReview =  $this->userReviewService->deleteUserReview($id);
             return response()->json([
                 'success' => true,
-                'message' => 'Đánh giá đã được xóa thành công.'
+                'message' => 'Đánh giá đã được xóa thành công.',
+                'data' => $newReview
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Xóa đánh giá thất bại'], 500);
