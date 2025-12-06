@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerAddressController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingCartController;
@@ -61,6 +62,7 @@ Route::patch('/video-reviews/{id}/toggle', [VideoReviewController::class, 'toggl
 
 Route::apiResource('payment-type', PaymentTypeController::class);
 Route::apiResource('shopping-order', ShoppingOrderController::class);
+Route::get('/customer-addresses/{userId}', [CustomerAddressController::class, 'getAddressesByUser']);
 
 Route::get('shopping-order/user/{userId}', [ShoppingOrderController::class, 'getOrdersByUser']);
 
